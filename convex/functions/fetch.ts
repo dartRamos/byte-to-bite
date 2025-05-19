@@ -5,11 +5,29 @@ export const fetchRecipes = action(async (ctx, { items }: { items: string[] }) =
     throw new Error("No ingredients provided");
   }
 
-  const API_KEY = process.env.SPOONACULAR_API_KEY; // or however you access env vars in your setup
+  const API_KEY = ctx.env.SPOONACULAR_API_KEY;;
   const ingredientsString = items.join(",");
   const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${encodeURIComponent(
     ingredientsString
   )}&apiKey=${API_KEY}`;
+
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status} ${res.statusText}`);
+  }
+
+  return await res.json();
+});
+
+
+export const fetchRecipeDetails = action(async (ctx, { recipeId }: { recipeId: number }) => {
+  if (!recipeId) {
+    throw new Error("No recipe ID provided");
+  }
+
+  const API_KEY = ctx.env.SPOONACULAR_API_KEY;;
+  const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`;
 
   const res = await fetch(url);
 

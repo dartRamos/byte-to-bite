@@ -108,26 +108,19 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
   },
   input: {
-    margin: 12,
     borderWidth: 1,
     backgroundColor: 'white',
-    justifyContent: 'center',
-    alignContent: 'center',
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    width: "100%",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginRight: 10, // Space between input and button
   },
+  
   findRecipeButton: {
     borderWidth: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: COLORS.white,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    borderRadius: 14,
-    marginBottom: 20,
-    width: "100%",
-    maxWidth: 300,
-    left: 23
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 10,
   },
-});
+})
