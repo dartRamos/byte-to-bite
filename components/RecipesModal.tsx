@@ -26,15 +26,6 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
       }}>
-        {/* <ImageBackground source={require('../assets/images/paper.png')}
-          style={{
-            position: 'absolute',
-            width: 400,
-            height: 1300,
-            borderRadius: 10,
-            overflow: 'hidden',
-          }}
-        /> */}
         <ScrollView>
           {recipes.length > 0 && (
             <View>
@@ -42,16 +33,16 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
                 <View 
                 key={index}
                 style={{
-                 
+                 position:'relative'
                 }}
                 
                 >
-                  {/* <Text style={{color: "black", fontSize: 20, backgroundColor: 'white'}}>{recipe.title}</Text> */}
-                  <Image 
+                    <Image 
                   source={{uri: recipe.image}}
-                  style={{ width: 200, height: 100, marginTop: 10, borderRadius: 8,  }}
+                  style={{ width: 400, height: 300, marginTop: 10, borderRadius: 8 }}
                   />
-                </View>
+                    <Text style={{color: "white", fontSize: 25, bottom: 0,position:'absolute', backgroundColor: 'rgba(0,0,0,0.5)', flexWrap: 'wrap'}}>{recipe.title}</Text>
+                  </View>
               ))}
             </View>
           )}

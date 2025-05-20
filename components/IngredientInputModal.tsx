@@ -1,6 +1,5 @@
-// IngredientInputModal.js
 import { useConvex } from "convex/react";
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { api } from '../convex/_generated/api';
 import { styles } from '../styles/auth.styles';
@@ -20,8 +19,6 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [recipes, setRecipes] = useState<string[]>([]);
   const [showRecipeModal, setShowRecipeModal] = useState(false);
-  
-
 
   const handleAddIngredient = () => {
     if (!text.trim()) return;
@@ -41,13 +38,13 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
     }
   
     try {
-      const data = await convex.action(api.functions.fetch.fetchRecipes, { items: ingredients });
+      const data = await convex.action(api.functions.fetchRecipeByIngredients.fetchRecipes, { items: ingredients });
       console.log("Fetched recipes:", data);
       setRecipes(data);
       onClose();
       setShowRecipeModal(true);
     } catch (err) {
-      console.error(err);
+      console.error('This is a error', err);
       setRecipes([]);
     }
   };
@@ -67,7 +64,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           alignItems: 'center',
           backgroundColor: 'rgba(0,0,0,0.5)'
         }}>
-          <ImageBackground source={require('../assets/images/list.png')}
+          <ImageBackground source={require('../assets/images/notepad.png')}
             style={{
               position: 'absolute',
               width: 1000,
@@ -130,7 +127,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           isVisible={showRecipeModal}
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
-        />
+        /> 
       )}
     </>
   );
