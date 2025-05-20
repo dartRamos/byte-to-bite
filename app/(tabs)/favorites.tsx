@@ -1,3 +1,5 @@
+// favorite recipes will be here 
+
 import { View, Text } from 'react-native'
 import React from 'react'
 
