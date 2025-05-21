@@ -1,5 +1,5 @@
-import { useConvex } from "convex/react";
-import React, { useState, useRef } from 'react';
+import { useConvex, useMutation } from "convex/react";
+import React, { useState } from 'react';
 import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { api } from '../convex/_generated/api';
 import { styles } from '../styles/auth.styles';
@@ -17,24 +17,39 @@ type IngredientInputModalProps = {
 };
 
 export default function IngredientInputModal({ isVisible, onClose }: IngredientInputModalProps) {
+  
   const convex = useConvex();
+  const insertIngredient = useMutation(api.functions.userIngredients.insertUserIngredient);
 
   const [text, setText] = useState('');
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [recipes, setRecipes] = useState<Recipe[]>([]); // ✅ Corrected type
+  const [recipes, setRecipes] = useState<Recipe[]>([]); 
   const [showRecipeModal, setShowRecipeModal] = useState(false);
 
-  // Adds ingredients to list
-  const handleAddIngredient = () => {
+  // Adds ingredients to list and DB
+  const handleAddIngredient = async () => {
     if (!text.trim()) return;
 
     const newIngredients = text
       .trim()
       .split(/\s+/)
+      .map(item => item.toLowerCase())
       .filter(item => item.length > 0);
 
     setIngredients(prev => [...prev, ...newIngredients]);
     setText('');
+
+    // Save each new ingredient to DB 
+    for (const ingredient of newIngredients) {
+      try {
+        await insertIngredient({
+          ingredientName: ingredient,
+          isPantryStaple: false // or true if you want to allow that input later
+        });
+      } catch (err) {
+        console.error("Failed to insert ingredient:", ingredient, err);
+      }
+    }
   };
 
   // Fetches recipes via API

@@ -28,3 +28,5 @@ export default function ClerkAndConvexProviders({children}: {children: React.Rea
     </ClerkProvider>
   )
 }
+
+console.log("CONVEX URL:", process.env.EXPO_PUBLIC_CONVEX_URL);

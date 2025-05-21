@@ -8,7 +8,6 @@ export default defineSchema({
     email: v.string(),
     image: v.string(), // Comes with login in via email
     clerkId: v.string(),
-    hasSeenWelcome: v.boolean()
   }).index("by_clerk_id", ["clerkId"]),
 
   userIngredients: defineTable({

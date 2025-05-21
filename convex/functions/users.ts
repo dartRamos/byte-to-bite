@@ -14,20 +14,10 @@ export const createUser = mutation({
   handler: async(ctx, args) => {
 
     // Checks if user exists already
-    const existingUser = await ctx.db
-    .query("users")
-    .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
-    .unique();
+    const existingUser = await ctx.db.query("users").withIndex("by_clerk_id",(q) => q.eq("clerkId", args.clerkId)).first();
 
-    await ctx.auth.getUserIdentity();
 
-    // If user exists, update hasSeenWelcome and return
-    if (existingUser) {
-      await ctx.db.patch(existingUser._id, { 
-        hasSeenWelcome: args.hasSeenWelcome ?? true 
-      });
-      return existingUser._id;
-    }
+    if (existingUser) return
 
     // Creating user in DB
     await ctx.db.insert("users", {
@@ -36,7 +26,6 @@ export const createUser = mutation({
       email: args.email,
       image: args.image,
       clerkId: args.clerkId,
-      hasSeenWelcome: args.hasSeenWelcome ?? false
     })
   }
 });
