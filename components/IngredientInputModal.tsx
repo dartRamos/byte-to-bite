@@ -9,7 +9,7 @@ import RecipesModal from "./RecipesModal";
 type Recipe = {
   title: string;
   image: string;
-  id: string;
+  id: number;
 };
 
 type IngredientInputModalProps = {
@@ -24,6 +24,10 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [recipes, setRecipes] = useState<Recipe[]>([]); // ✅ Corrected type
   const [showRecipeModal, setShowRecipeModal] = useState(false);
+
+  // add state for full recipe modal 
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [showFullRecipeModal, setShowFullRecipeModal] = useState(false);
 
   const handleAddIngredient = () => {
     if (!text.trim()) return;
@@ -61,6 +65,19 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
       setRecipes([]);
     }
   };
+
+  const handleSelectRecipe = async (id: number) => {
+  try {
+    const fullRecipe = await convex.action(api.functions.fetchRecipeByRecipeId.fetchRecipeById, { id });
+   
+    console.log("FULL RECIPE DATA", fullRecipe);  // Check if the data comes through
+
+    setSelectedRecipe(fullRecipe);
+    setShowFullRecipeModal(true);
+  } catch (error) {
+    console.error("Error fetching full recipe:", error);
+  }
+};
 
   return (
     <>
@@ -140,9 +157,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           isVisible={showRecipeModal}
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
-          onSelectRecipe={(id) => {
-            console.log("Selected recipe ID:", id);
-          }}
+          onSelectRecipe={handleSelectRecipe}
         />
       )}
     </>

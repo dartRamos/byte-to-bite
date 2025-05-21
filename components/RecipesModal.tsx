@@ -4,14 +4,14 @@ import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } 
 type Recipe = {
   image: string;
   title: string;
-  id: string;
+  id: number;
 };
 
 type RecipesModalProps = {
   isVisible: boolean;
   recipes: Recipe[];
   onClose: () => void;
-  onSelectRecipe: (id: string) => void; // new prop
+  onSelectRecipe: (id: number) => void; // new prop
 };
 
 const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesModalProps) => {

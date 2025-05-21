@@ -1,9 +1,9 @@
 import { action } from "../_generated/server";
 import { v } from "convex/values";
 
-export const fetchRecipeByRecipeId = action({
+export const fetchRecipeById = action({
   args: {
-    id: v.string()
+    id: v.number() //expects a recipe ID as a number
   },
   handler: async (ctx, { id }) => {
 
@@ -17,8 +17,8 @@ export const fetchRecipeByRecipeId = action({
         apiKey: apiKey,
       });
 
-    const res = await fetch(url);
+    const res = await fetch(url); // makes the HTTP request
     if (!res.ok) throw new Error(`API Error: ${res.status}`);
-    return await res.json();
+    return await res.json(); // returns full recipe data to the frontend
   }
 });
