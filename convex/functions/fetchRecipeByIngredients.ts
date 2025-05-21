@@ -1,25 +1,25 @@
 import { action } from "../_generated/server";
-import type { ActionCtx } from "../config";
+import { v } from "convex/values";
 
+export const fetchRecipes = action({
+  args: {
+    items: v.array(v.string())
+  },
+  handler: async (ctx, { items }) => {
 
-export const fetchRecipes = action(async (ctx, { items }: { items: string[] }) => {
+    const apiKey = process.env.SPOONACULAR_API_KEY;
 
-    console.log("API KEY IN CONTEXT:", (ctx as ActionCtx).env);
-  if (!items || items.length === 0) {
-    throw new Error("No ingredients provided");
+    if (!apiKey) throw new Error("Missing API key");
+    if (!items.length) throw new Error("No ingredients provided");
+
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?` + 
+      new URLSearchParams({
+        ingredients: items.join(","),
+        apiKey: apiKey
+      });
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`API Error: ${res.status}`);
+    return await res.json();
   }
-
-  const API_KEY = (ctx as ActionCtx).env.SPOONACULAR_API_KEY;
-  const ingredientsString = items.join(",");
-  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${encodeURIComponent(
-    ingredientsString
-  )}&apiKey=${API_KEY}`;
-
-  const res = await fetch(url);
-
-  if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
-  }
-
-  return await res.json();
 });

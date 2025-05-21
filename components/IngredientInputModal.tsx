@@ -5,6 +5,11 @@ import { api } from '../convex/_generated/api';
 import { styles } from '../styles/auth.styles';
 import RecipesModal from "./RecipesModal";
 
+// ✅ Define the Recipe type
+type Recipe = {
+  title: string;
+  image: string;
+};
 
 type IngredientInputModalProps = {
   isVisible: boolean;
@@ -12,39 +17,43 @@ type IngredientInputModalProps = {
 };
 
 export default function IngredientInputModal({ isVisible, onClose }: IngredientInputModalProps) {
-  
   const convex = useConvex();
 
   const [text, setText] = useState('');
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [recipes, setRecipes] = useState<string[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]); // ✅ Corrected type
   const [showRecipeModal, setShowRecipeModal] = useState(false);
 
   const handleAddIngredient = () => {
     if (!text.trim()) return;
-  
+
     const newIngredients = text
       .trim()
       .split(/\s+/)
       .filter(item => item.length > 0);
-  
+
     setIngredients(prev => [...prev, ...newIngredients]);
     setText('');
   };
 
   const getRecipeByIngredients = async () => {
-    if (ingredients.length === 0) {
-      return;
-    }
-  
+    if (ingredients.length === 0) return;
+
     try {
       const data = await convex.action(api.functions.fetchRecipeByIngredients.fetchRecipes, { items: ingredients });
       console.log("Fetched recipes:", data);
-      setRecipes(data);
+
+      // ✅ Ensure response matches Recipe type
+      const formattedRecipes: Recipe[] = data.map((item: any) => ({
+        title: item.title,
+        image: item.image
+      }));
+
+      setRecipes(formattedRecipes);
       onClose();
       setShowRecipeModal(true);
     } catch (err) {
-      console.error('This is a error', err);
+      console.error('This is an error', err);
       setRecipes([]);
     }
   };
@@ -57,7 +66,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         visible={isVisible}
         onRequestClose={onClose}
       >
-        <SafeAreaView style={{  
+        <SafeAreaView style={{
           position: 'relative',
           flex: 1,
           justifyContent: 'center',
@@ -92,7 +101,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               </Text>
             ))}
           </View>
-        
+
           {ingredients.length === 0 ? (
             <View style={{ top: 170, flexDirection: 'row', alignItems: 'center' }}>
               <TextInput
@@ -127,7 +136,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           isVisible={showRecipeModal}
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
-        /> 
+        />
       )}
     </>
   );

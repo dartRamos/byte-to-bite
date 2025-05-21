@@ -1,24 +1,25 @@
-import { useConvex } from "convex/react";
-import React, { useEffect, useState, useRef } from 'react';
-import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View, Image, ScrollView } from 'react-native';
-import { api } from '../convex/_generated/api';
-import { styles } from '../styles/auth.styles';
+import React from 'react';
+import { Image, Modal, SafeAreaView, ScrollView, Text, View } from 'react-native';
+
+type Recipe = {
+  image: string;
+  title: string;
+};
 
 type RecipesModalProps = {
   isVisible: boolean;
-  recipes: string[];
+  recipes: Recipe[];
   onClose: () => void;
 };
 
 const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
   return (
-    
     <Modal
       animationType='slide'
       transparent={true}
       visible={isVisible}
       onRequestClose={onClose}
-      >
+    >
       <SafeAreaView style={{
         position: 'relative',
         flex: 1,
@@ -30,27 +31,29 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
           {recipes.length > 0 && (
             <View>
               {recipes.slice(0, 5).map((recipe, index) => (
-                <View 
-                key={index}
-                style={{
-                 position:'relative'
-                }}
-                
-                >
-                    <Image 
-                  source={{uri: recipe.image}}
-                  style={{ width: 400, height: 300, marginTop: 10, borderRadius: 8 }}
+                <View key={index} style={{ position: 'relative' }}>
+                  <Image
+                    source={{ uri: recipe.image }}
+                    style={{ width: 400, height: 300, marginTop: 10, borderRadius: 8 }}
                   />
-                    <Text style={{color: "white", fontSize: 25, bottom: 0,position:'absolute', backgroundColor: 'rgba(0,0,0,0.5)', flexWrap: 'wrap'}}>{recipe.title}</Text>
-                  </View>
+                  <Text style={{
+                    color: "white",
+                    fontSize: 25,
+                    bottom: 0,
+                    position: 'absolute',
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    flexWrap: 'wrap'
+                  }}>
+                    {recipe.title}
+                  </Text>
+                </View>
               ))}
             </View>
           )}
         </ScrollView>
-
       </SafeAreaView>
     </Modal>
-  )
+  );
 }
 
-export default RecipesModal
+export default RecipesModal;

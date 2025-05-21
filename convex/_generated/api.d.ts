@@ -15,7 +15,6 @@ import type {
 } from "convex/server";
 import type * as config from "../config.js";
 import type * as functions_fetchRecipeByIngredients from "../functions/fetchRecipeByIngredients.js";
-import type * as functions_fetchRecipeByRecipeId from "../functions/fetchRecipeByRecipeId.js";
 import type * as functions_savedFavorites from "../functions/savedFavorites.js";
 import type * as functions_userIngredients from "../functions/userIngredients.js";
 import type * as functions_users from "../functions/users.js";
@@ -32,7 +31,6 @@ import type * as http from "../http.js";
 declare const fullApi: ApiFromModules<{
   config: typeof config;
   "functions/fetchRecipeByIngredients": typeof functions_fetchRecipeByIngredients;
-  "functions/fetchRecipeByRecipeId": typeof functions_fetchRecipeByRecipeId;
   "functions/savedFavorites": typeof functions_savedFavorites;
   "functions/userIngredients": typeof functions_userIngredients;
   "functions/users": typeof functions_users;

@@ -1,19 +1,19 @@
-import { action } from "../_generated/server";
-import type { ActionCtx } from "../config";
+// import { action } from "../_generated/server";
 
-export const fetchRecipeById = action(async (ctx, { recipeId }: { recipeId: number}) => {
-  if (!recipeId) {
-    throw new Error("No recipe found.")
-  }
 
-  const API_KEY = (ctx as ActionCtx).env.SPOONACULAR_API_KEY;
-  const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`;
+// export const fetchRecipeById = action(async (ctx, { recipeId }: { recipeId: number}) => {
+//   if (!recipeId) {
+//     throw new Error("No recipe found.")
+//   }
 
-  const res = await fetch(url);
+//   const API_KEY = (ctx as ActionCtx).env.SPOONACULAR_API_KEY;
+//   const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`;
 
-  if(!res.ok) {
-    throw new Error(`API rror: ${res.status} ${res.statusText}`);
-  }
+//   const res = await fetch(url);
 
-  return await res.json();
-});
+//   if(!res.ok) {
+//     throw new Error(`API rror: ${res.status} ${res.statusText}`);
+//   }
+
+//   return await res.json();
+// });

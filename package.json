@@ -11,8 +11,8 @@
     "lint": "expo lint"
   },
   "dependencies": {
-    "@clerk/clerk-expo": "^2.11.4",
-    "@clerk/types": "^4.58.1",
+    "@clerk/clerk-expo": "^2.11.7",
+    "@clerk/types": "^4.59.1",
     "@expo/vector-icons": "^14.1.0",
     "@react-native-community/cli": "latest",
     "@react-navigation/bottom-tabs": "^7.3.10",
@@ -46,7 +46,8 @@
     "react-native-screens": "~4.10.0",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
-    "svix": "^1.65.0"
+    "svix": "^1.65.0",
+    "util": "^0.12.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

@@ -20,6 +20,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["./**/*", "../components/IngredientInputModal.tsx"],
+  "include": ["./**/*", "../components/IngredientInputModal.tsx", "../convex.config.ts"],
   "exclude": ["./_generated"]
 }

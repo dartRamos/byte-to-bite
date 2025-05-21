@@ -1,8 +1,7 @@
-
 export default {
   providers: [
     {
-      domain: "https://fresh-grizzly-83.clerk.accounts.dev",
+      domain: process.env.CLERK_FRONTEND_API_URL,
       applicationID: "convex",
     },
   ]
