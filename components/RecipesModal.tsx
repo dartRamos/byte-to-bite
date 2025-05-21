@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Modal, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 type Recipe = {
   image: string;
@@ -40,12 +40,30 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
                     color: "white",
                     fontSize: 25,
                     bottom: 0,
-                    position: 'absolute',
+                   
                     backgroundColor: 'rgba(0,0,0,0.5)',
                     flexWrap: 'wrap'
                   }}>
                     {recipe.title}
                   </Text>
+
+                  {/* View Full Recipe Button */}
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "#fff",
+                      paddingVertical: 10,
+                      paddingHorizontal: 15, 
+                      borderRadius: 6,
+                      alignSelf: "center", 
+                      marginTop: 10,
+                    }}
+                    onPress={() => {
+                      //ADD LOGIC HERE
+                    }}
+                  >
+                    <Text style={{color: '#333', fontWeight: 'bold'}}>View Full Recipe </Text>
+                  </TouchableOpacity>
+                  
                 </View>
               ))}
             </View>
