@@ -3,29 +3,40 @@ import { mutation } from "../_generated/server";
 
 export const insertUserIngredient = mutation({
   args: { 
-    userId: v.id("users"), 
     ingredientName: v.string(), 
     isPantryStaple: v.boolean()
   },
 
   handler: async (ctx, args) => { // ctx = context
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unathorized.")
+
+    const currentUser = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .unique()
+
+    if (!currentUser) throw new Error("User not found.")
+
+    const normalizedName = args.ingredientName.trim().toLowerCase();
 
     // checks if ingredient exists
-    const existingIngredient = await ctx.db
+    const existingIngredients = await ctx.db
     .query("userIngredients")
     .withIndex("by_user_and_ingredient", (q) => 
-    q.eq("userId", args.userId).eq("ingredientName", args.ingredientName))
-    .unique();
+    q.eq("userId", currentUser._id).eq("ingredientName", normalizedName))
+    .collect();
 
-    await ctx.auth.getUserIdentity();
+    if (existingIngredients.length > 0) {
+      return existingIngredients[0]._id;
+    }
 
-    // if ingredient exists just return ingredient
-    if(existingIngredient) return
-
-    await ctx.db.insert("userIngredients", {
-      userId: args.userId,
-      ingredientName: args.ingredientName,
+    const ingredientId = await ctx.db.insert("userIngredients", {
+      userId: currentUser._id,
+      ingredientName: normalizedName,
       isPantryStaple: args.isPantryStaple,
-    });
-  }
+    })
+
+    return ingredientId;
+  },
 });

@@ -1,12 +1,12 @@
-import { useConvex } from "convex/react";
+import { useConvex, useMutation } from "convex/react";
 import React, { useState } from 'react';
-import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { api } from '../convex/_generated/api';
 import { styles } from '../styles/auth.styles';
 import RecipesModal from "./RecipesModal";
 import FullRecipeModal from "./FullRecipeModal";
 
-//  Define the Recipe type
+// Define the Recipe type
 type Recipe = {
   title: string;
   image: string;
@@ -30,29 +30,45 @@ type IngredientInputModalProps = {
 };
 
 export default function IngredientInputModal({ isVisible, onClose }: IngredientInputModalProps) {
+  
   const convex = useConvex();
+  const insertIngredient = useMutation(api.functions.userIngredients.insertUserIngredient);
 
   const [text, setText] = useState('');
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [recipes, setRecipes] = useState<Recipe[]>([]); // ✅ Corrected type
+  const [recipes, setRecipes] = useState<Recipe[]>([]); 
   const [showRecipeModal, setShowRecipeModal] = useState(false);
 
   // add state for full recipe modal 
   const [selectedRecipe, setSelectedRecipe] = useState<FullRecipe | null>(null);
   const [showFullRecipeModal, setShowFullRecipeModal] = useState(false);
 
-  const handleAddIngredient = () => {
+  const handleAddIngredient = async () => {
     if (!text.trim()) return;
 
     const newIngredients = text
       .trim()
       .split(/\s+/)
+      .map(item => item.toLowerCase())
       .filter(item => item.length > 0);
 
     setIngredients(prev => [...prev, ...newIngredients]);
     setText('');
+
+    // Save each new ingredient to DB 
+    for (const ingredient of newIngredients) {
+      try {
+        await insertIngredient({
+          ingredientName: ingredient,
+          isPantryStaple: false // or true if you want to allow that input later
+        });
+      } catch (err) {
+        console.error("Failed to insert ingredient:", ingredient, err);
+      }
+    }
   };
 
+  // Fetches recipes via API
   const getRecipeByIngredients = async () => {
     if (ingredients.length === 0) return;
 
@@ -60,7 +76,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
       const data = await convex.action(api.functions.fetchRecipeByIngredients.fetchRecipes, { items: ingredients });
       //console.log("Fetched recipes:", data);
 
-      // ✅ Ensure response matches Recipe type
+      // Ensure response matches Recipe type
       const formattedRecipes: Recipe[] = data.map((item: any) => ({
         title: item.title,
         image: item.image,
@@ -70,7 +86,6 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
       // console.log("Formatted recipes", formattedRecipes);
 
       setRecipes(formattedRecipes);
-      onClose();
       setShowRecipeModal(true);
     } catch (err) {
       console.error('This is an error', err);
@@ -92,12 +107,19 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   }
 };
 
+  // Edits ingredient list
+  const handleEditList = () => {
+    if (ingredients.length > 0) {
+      setIngredients([]);
+    }
+  }
+
   return (
     <>
       <Modal
         animationType='slide'
         transparent={true}
-        visible={isVisible}
+        visible={isVisible && !showRecipeModal}
         onRequestClose={onClose}
       >
         <SafeAreaView style={{
@@ -160,6 +182,12 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               >
                 <Text>Find Recipe!</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.findRecipeButton}
+                onPress={handleEditList}
+              >
+                <Text>Edit List</Text>
+              </TouchableOpacity>
             </View>
           )}
         </SafeAreaView>
@@ -171,6 +199,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
           onSelectRecipe={handleSelectRecipe}
+          onBack={() => setShowRecipeModal(false)}
         />
       )}
 

@@ -1,4 +1,4 @@
-import ClerkAndConvexProviders from "@/provides/ClerkAndConvexProviders";
+import ClerkAndConvexProviders from "@/providers/ClerkAndConvexProviders";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import InitialLayout from "../components/InitialLayout";
 
