@@ -140,6 +140,9 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           isVisible={showRecipeModal}
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
+          onSelectRecipe={(id) => {
+            console.log("Selected recipe ID:", id);
+          }}
         />
       )}
     </>

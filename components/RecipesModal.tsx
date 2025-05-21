@@ -11,9 +11,10 @@ type RecipesModalProps = {
   isVisible: boolean;
   recipes: Recipe[];
   onClose: () => void;
+  onSelectRecipe: (id: string) => void; // new prop
 };
 
-const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
+const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesModalProps) => {
   return (
     <Modal
       animationType='slide'
@@ -28,6 +29,23 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
       }}>
+
+        {/* Close Button */}
+        <TouchableOpacity
+          onPress={onClose}
+          style={{
+            position: 'absolute',
+            top: 100,
+            right: 20,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            padding: 10,
+            borderRadius: 20,
+            zIndex: 20,
+          }}
+        >
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>X</Text>
+        </TouchableOpacity>
+
         <ScrollView>
           {recipes.length > 0 && (
             <View>
@@ -58,9 +76,7 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
                       alignSelf: "center", 
                       marginTop: 10,
                     }}
-                    onPress={() => {
-                      //ADD LOGIC HERE
-                    }}
+                    onPress={() => onSelectRecipe(recipe.id)} // triggers parent logic
                   >
                     <Text style={{color: '#333', fontWeight: 'bold'}}>View Full Recipe </Text>
                   </TouchableOpacity>
