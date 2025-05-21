@@ -59,10 +59,11 @@ http.route({
       try {
         await ctx.runMutation(api.functions.users.createUser, {
           email,
-          fullName:name,
-          image:image_url,
-          clerkId:id,
-          username:email.split("@")[0],
+          fullName: name,
+          image: image_url,
+          clerkId: id,
+          username: email.split("@")[0],
+          hasSeenWelcome: false 
         })
       } catch (err) {
         console.log("Error creating user:", err);

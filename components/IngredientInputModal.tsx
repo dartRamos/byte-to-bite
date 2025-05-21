@@ -1,11 +1,11 @@
 import { useConvex } from "convex/react";
-import React, { useState } from 'react';
-import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import { api } from '../convex/_generated/api';
 import { styles } from '../styles/auth.styles';
 import RecipesModal from "./RecipesModal";
 
-// ✅ Define the Recipe type
+// Define the Recipe type
 type Recipe = {
   title: string;
   image: string;
@@ -24,6 +24,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   const [recipes, setRecipes] = useState<Recipe[]>([]); // ✅ Corrected type
   const [showRecipeModal, setShowRecipeModal] = useState(false);
 
+  // Adds ingredients to list
   const handleAddIngredient = () => {
     if (!text.trim()) return;
 
@@ -36,6 +37,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
     setText('');
   };
 
+  // Fetches recipes via API
   const getRecipeByIngredients = async () => {
     if (ingredients.length === 0) return;
 
@@ -43,14 +45,13 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
       const data = await convex.action(api.functions.fetchRecipeByIngredients.fetchRecipes, { items: ingredients });
       console.log("Fetched recipes:", data);
 
-      // ✅ Ensure response matches Recipe type
+      // Ensure response matches Recipe type
       const formattedRecipes: Recipe[] = data.map((item: any) => ({
         title: item.title,
         image: item.image
       }));
 
       setRecipes(formattedRecipes);
-      onClose();
       setShowRecipeModal(true);
     } catch (err) {
       console.error('This is an error', err);
@@ -58,12 +59,19 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
     }
   };
 
+  // Edits ingredient list
+  const handleEditList = () => {
+    if (ingredients.length > 0) {
+      setIngredients([]);
+    }
+  }
+
   return (
     <>
       <Modal
         animationType='slide'
         transparent={true}
-        visible={isVisible}
+        visible={isVisible && !showRecipeModal}
         onRequestClose={onClose}
       >
         <SafeAreaView style={{
@@ -126,6 +134,12 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               >
                 <Text>Find Recipe!</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.findRecipeButton}
+                onPress={handleEditList}
+              >
+                <Text>Edit List</Text>
+              </TouchableOpacity>
             </View>
           )}
         </SafeAreaView>
@@ -136,6 +150,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           isVisible={showRecipeModal}
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
+          onBack={() => setShowRecipeModal(false)}
         />
       )}
     </>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Modal, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { styles } from '../styles/auth.styles';
 
 type Recipe = {
   image: string;
@@ -10,9 +11,11 @@ type RecipesModalProps = {
   isVisible: boolean;
   recipes: Recipe[];
   onClose: () => void;
+  onBack?: () => void; // Make onBack optional
 };
 
-const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
+const RecipesModal = ({ isVisible, recipes, onClose, onBack }: RecipesModalProps) => {
+
   return (
     <Modal
       animationType='slide'
@@ -27,6 +30,12 @@ const RecipesModal = ({ isVisible, recipes, onClose }: RecipesModalProps) => {
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
       }}>
+        <TouchableOpacity
+          style={styles.findRecipeButton}
+          onPress={onBack}
+        >
+          <Text>Return to previous modal</Text>
+        </TouchableOpacity>
         <ScrollView>
           {recipes.length > 0 && (
             <View>
