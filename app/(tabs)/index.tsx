@@ -9,7 +9,6 @@ export default function Index() {
 
 
   useEffect(() => {
-    if (userData && !userData.hasSeenWelcome) {
     Alert.alert(
       "Let's get cookin'!",
       '1. Tap on the "Ingredients" list on the fridge.\n\n2. Enter all Ingredients you want to use and hit enter or tap the "Add ingredients" button.\n\n3. Tap "Find Recipes" and get to cooking!',
@@ -17,11 +16,9 @@ export default function Index() {
       [
         { 
           text: "Got it!",
-          onPress: () => markWelcomeSeen({ userId: user.id })
         }
       ]
     );
-    }
   }, []);
 
   return (
