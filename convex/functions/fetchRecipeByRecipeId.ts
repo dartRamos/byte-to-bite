@@ -1,19 +1,24 @@
-// import { action } from "../_generated/server";
+import { action } from "../_generated/server";
+import { v } from "convex/values";
 
+export const fetchRecipeByRecipeId = action({
+  args: {
+    id: v.string()
+  },
+  handler: async (ctx, { id }) => {
 
-// export const fetchRecipeById = action(async (ctx, { recipeId }: { recipeId: number}) => {
-//   if (!recipeId) {
-//     throw new Error("No recipe found.")
-//   }
+    const apiKey = process.env.SPOONACULAR_API_KEY;
 
-//   const API_KEY = (ctx as ActionCtx).env.SPOONACULAR_API_KEY;
-//   const url = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`;
+    if (!apiKey) throw new Error("Missing API key");
+    if (!id) throw new Error("No ID provided");
 
-//   const res = await fetch(url);
+    const url = `https://api.spoonacular.com/recipes/${id}/information?` +
+      new URLSearchParams({
+        apiKey: apiKey,
+      });
 
-//   if(!res.ok) {
-//     throw new Error(`API rror: ${res.status} ${res.statusText}`);
-//   }
-
-//   return await res.json();
-// });
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`API Error: ${res.status}`);
+    return await res.json();
+  }
+});

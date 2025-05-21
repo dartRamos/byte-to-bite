@@ -67,6 +67,7 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
                   </Text>
 
                   {/* View Full Recipe Button */}
+                  {/* When user taps "View Full Recipe," navigate to FullRecipe screen and pass the recipe ID as a param. */}
                   <TouchableOpacity
                     style={{
                       backgroundColor: "#fff",

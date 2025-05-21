@@ -1,5 +1,13 @@
+// grab the param from View Full Recipe Button and fetch the full recipe data from the API.
+
+// Display the full recipe details.
+
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+type FullRecipeProps = {
+  recipeId: string;
+};
 
 const FullRecipe = () => {
   return (
