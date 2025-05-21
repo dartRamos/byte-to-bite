@@ -4,12 +4,24 @@ import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity
 import { api } from '../convex/_generated/api';
 import { styles } from '../styles/auth.styles';
 import RecipesModal from "./RecipesModal";
+import FullRecipeModal from "./FullRecipeModal";
 
-// ✅ Define the Recipe type
+//  Define the Recipe type
 type Recipe = {
   title: string;
   image: string;
   id: number;
+};
+
+//  Define the Full Recipe type
+type FullRecipe = {
+  id: number;
+  title: string;
+  readyInMinutes: number;
+  servings: number;
+  instructions: string;
+  image: string;
+  extendedIngredients: { id: number; name: string; amount: number; unit: string }[];
 };
 
 type IngredientInputModalProps = {
@@ -26,7 +38,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   const [showRecipeModal, setShowRecipeModal] = useState(false);
 
   // add state for full recipe modal 
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<FullRecipe | null>(null);
   const [showFullRecipeModal, setShowFullRecipeModal] = useState(false);
 
   const handleAddIngredient = () => {
@@ -55,7 +67,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         id: item.id // will need the id for full recipe API call
       }));
 
-      console.log("Formatted recipes", formattedRecipes);
+      // console.log("Formatted recipes", formattedRecipes);
 
       setRecipes(formattedRecipes);
       onClose();
@@ -70,10 +82,11 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   try {
     const fullRecipe = await convex.action(api.functions.fetchRecipeByRecipeId.fetchRecipeById, { id });
    
-    console.log("FULL RECIPE DATA", fullRecipe);  // Check if the data comes through
+    //console.log("FULL RECIPE DATA", fullRecipe);  // Check if the data comes through
 
     setSelectedRecipe(fullRecipe);
     setShowFullRecipeModal(true);
+
   } catch (error) {
     console.error("Error fetching full recipe:", error);
   }
@@ -154,12 +167,23 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
 
       {showRecipeModal && (
         <RecipesModal
-          isVisible={showRecipeModal}
+          isVisible={!showFullRecipeModal}
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
           onSelectRecipe={handleSelectRecipe}
         />
       )}
+
+      <FullRecipeModal
+        isVisible={showFullRecipeModal}
+        recipe={selectedRecipe}
+        onClose={() => {
+          setSelectedRecipe(null);
+          setShowFullRecipeModal(false);
+      }}
+      />
+
+
     </>
   );
 }
