@@ -9,6 +9,7 @@ import RecipesModal from "./RecipesModal";
 type Recipe = {
   title: string;
   image: string;
+  id: string;
 };
 
 type IngredientInputModalProps = {
@@ -41,13 +42,16 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
 
     try {
       const data = await convex.action(api.functions.fetchRecipeByIngredients.fetchRecipes, { items: ingredients });
-      console.log("Fetched recipes:", data);
+      //console.log("Fetched recipes:", data);
 
       // ✅ Ensure response matches Recipe type
       const formattedRecipes: Recipe[] = data.map((item: any) => ({
         title: item.title,
-        image: item.image
+        image: item.image,
+        id: item.id // will need the id for full recipe API call
       }));
+
+      console.log("Formatted recipes", formattedRecipes);
 
       setRecipes(formattedRecipes);
       onClose();

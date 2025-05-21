@@ -4,6 +4,7 @@ import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } 
 type Recipe = {
   image: string;
   title: string;
+  id: string;
 };
 
 type RecipesModalProps = {
