@@ -17,6 +17,7 @@ import type * as config from "../config.js";
 import type * as functions_fetchRecipeByIngredients from "../functions/fetchRecipeByIngredients.js";
 import type * as functions_fetchRecipeByRecipeId from "../functions/fetchRecipeByRecipeId.js";
 import type * as functions_getFavoriteByUser from "../functions/getFavoriteByUser.js";
+import type * as functions_posts from "../functions/posts.js";
 import type * as functions_savedFavorites from "../functions/savedFavorites.js";
 import type * as functions_userIngredients from "../functions/userIngredients.js";
 import type * as http from "../http.js";
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   "functions/fetchRecipeByIngredients": typeof functions_fetchRecipeByIngredients;
   "functions/fetchRecipeByRecipeId": typeof functions_fetchRecipeByRecipeId;
   "functions/getFavoriteByUser": typeof functions_getFavoriteByUser;
+  "functions/posts": typeof functions_posts;
   "functions/savedFavorites": typeof functions_savedFavorites;
   "functions/userIngredients": typeof functions_userIngredients;
   http: typeof http;

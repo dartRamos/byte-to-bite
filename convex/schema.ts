@@ -8,6 +8,7 @@ export default defineSchema({
     email: v.string(),
     image: v.string(), // Comes with login in via email
     clerkId: v.string(),
+    posts: v.number()
   }).index("by_clerk_id", ["clerkId"]),
 
   userIngredients: defineTable({
@@ -25,6 +26,12 @@ export default defineSchema({
     isFavorited: v.boolean()
   })
     .index("by_recipeId_and_userId", ["recipeId", "userId"])
-    .index("by_userId", ["userId"]) 
+    .index("by_userId", ["userId"]),
 
+  posts: defineTable({
+    userId: v.id("users"),
+    imageUrl: v.string(),
+    storageId: v.id('_storage'),
+    caption: v.optional(v.string()),
+  }).index("by_user", ["userId"]),
 })

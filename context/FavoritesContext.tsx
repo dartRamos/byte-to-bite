@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 // Use number[] for favorites since recipe IDs are numbers
 type FavoritesContextType = {

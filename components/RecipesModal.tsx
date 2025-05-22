@@ -1,7 +1,5 @@
 import React from 'react';
-import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { styles } from '../styles/auth.styles';
-import FavoriteButton from './FavoriteButton';
+import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Recipe = {
   image: string;
@@ -13,41 +11,23 @@ type RecipesModalProps = {
   isVisible: boolean;
   recipes: Recipe[];
   onClose: () => void;
-  onBack?: () => void; // Make onBack optional
-  onSelectRecipe: (id: number) => void; // new prop
+  onBack?: () => void; // optional
+  onSelectRecipe: (id: number) => void;
 };
 
 const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesModalProps) => {
 
   return (
     <Modal
-      animationType='slide'
+      animationType="slide"
       transparent={true}
       visible={isVisible}
       onRequestClose={onClose}
     >
-      <SafeAreaView style={{
-        position: 'relative',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)'
-      }}>
+      <SafeAreaView style={styles.modalContainer}>
 
-        {/* Close Button */}
-        <TouchableOpacity
-          onPress={onClose}
-          style={{
-            position: 'absolute',
-            top: 100,
-            right: 20,
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            padding: 10,
-            borderRadius: 20,
-            zIndex: 20,
-          }}
-        >
-          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>X</Text>
+        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+          <Text style={styles.closeText}>X</Text>
         </TouchableOpacity>
 
         <ScrollView>
@@ -56,49 +36,27 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
             <View>
               {recipes.slice(0, 5).map((recipe, index) => (
                 <View key={index} style={{ position: 'relative' }}>
-                  
                   <Image
                     source={{ uri: recipe.image }}
-                    style={{ width: 400, height: 300, marginTop: 10, borderRadius: 8 }}
+                    style={styles.recipeImage}
                   />
-                  
-                  {/* Recipe Title and Favorite Button */}
-                  <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
+                  <Text style={{
+                    color: "white",
+                    fontSize: 25,
+                    bottom: 0,
+                   
                     backgroundColor: 'rgba(0,0,0,0.5)',
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
+                    flexWrap: 'wrap'
                   }}>
-                    <Text style={{ color: "white", fontSize: 20, flex: 1 }}>
-                      {recipe.title}
-                    </Text>
-                    <FavoriteButton 
-                      recipeId={recipe.id} 
-                      title={recipe.title} 
-                      imageUrl={recipe.image}
-                  />
-                  </View>
+                    {recipe.title}
+                  </Text>
 
-                  
-
-                  {/* View Full Recipe Button */}
-                  {/* When user taps "View Full Recipe," navigate to FullRecipe screen and pass the recipe ID as a param. */}
                   <TouchableOpacity
-                    style={{
-                      backgroundColor: "#fff",
-                      paddingVertical: 10,
-                      paddingHorizontal: 15, 
-                      borderRadius: 6,
-                      alignSelf: "center", 
-                      marginTop: 10,
-                    }}
-                    onPress={() => onSelectRecipe(recipe.id)} // triggers parent logic
+                    style={styles.viewButton}
+                    onPress={() => onSelectRecipe(recipe.id)}
                   >
-                    <Text style={{color: '#333', fontWeight: 'bold'}}>View Full Recipe </Text>
+                    <Text style={styles.viewButtonText}>View Full Recipe</Text>
                   </TouchableOpacity>
-                  
                 </View>
               ))}
             </View>
@@ -107,6 +65,48 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
       </SafeAreaView>
     </Modal>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    position: 'relative',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 100,
+    right: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 10,
+    borderRadius: 20,
+    zIndex: 20,
+  },
+  closeText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  recipeImage: {
+    width: 400,
+    height: 300,
+    marginTop: 10,
+    borderRadius: 8,
+  },
+  viewButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 6,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  viewButtonText: {
+    color: '#333',
+    fontWeight: 'bold',
+  },
+});
 
 export default RecipesModal;
