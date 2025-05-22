@@ -17,7 +17,7 @@ type RecipesModalProps = {
   onSelectRecipe: (id: number) => void; // new prop
 };
 
-const RecipesModal = ({ isVisible, recipes, onClose, onBack, onSelectRecipe }: RecipesModalProps) => {
+const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesModalProps) => {
 
   return (
     <Modal

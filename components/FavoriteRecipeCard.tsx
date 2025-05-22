@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import FavoriteButton from './FavoriteButton';
 
 type RecipeCardProps = {
@@ -8,9 +8,10 @@ type RecipeCardProps = {
     title: string;
     imageUrl: string;
   };
+  onViewFullRecipe: (recipeId: number) => void;  
 };
 
-const FavoriteRecipeCard = ({ recipe }: RecipeCardProps) => {
+const FavoriteRecipeCard = ({ recipe, onViewFullRecipe }: RecipeCardProps) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
@@ -18,11 +19,11 @@ const FavoriteRecipeCard = ({ recipe }: RecipeCardProps) => {
 
       <Pressable
         style={styles.viewButton}
-        onPress={() => Alert.alert('Button pressed!', `Recipe ID: ${recipe.recipeId}`)}
+        onPress={() => onViewFullRecipe(recipe.recipeId)}  // call handler here
       >
         <Text style={styles.viewButtonText}>View Full Recipe</Text>
       </Pressable>
-      {/* Pass the recipe data to the FavoriteButton */}
+
       <FavoriteButton 
         recipeId={recipe.recipeId} 
         title={recipe.title} 
