@@ -23,6 +23,8 @@ export default defineSchema({
     title: v.string(),
     imageUrl: v.string(),
     isFavorited: v.boolean()
-  }).index("by_recipeId_and_userId", ["recipeId", "userId"])
+  })
+    .index("by_recipeId_and_userId", ["recipeId", "userId"])
+    .index("by_userId", ["userId"]) 
 
 })

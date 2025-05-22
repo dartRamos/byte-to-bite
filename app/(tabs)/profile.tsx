@@ -9,7 +9,7 @@ export default function UserProfile() {
   const { signOut } = useAuth();
 
   const dbUser = useQuery(
-    api.functions.users.getUserByClerkId,
+    api.users.getUserByClerkId,
     { clerkId: user?.id ?? "" }
   );
 
