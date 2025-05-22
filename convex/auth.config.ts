@@ -6,3 +6,5 @@ export default {
     },
   ]
 };
+
+console.log("CLERK URL in auth.config.ts:", process.env.CLERK_FRONTEND_API_URL);

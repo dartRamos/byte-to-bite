@@ -31,5 +31,7 @@ export const insertSavedRecipe = mutation({
       imageUrl: args.imageUrl,
       isFavorited: args.isFavorited
     });
+
+    
   }
 });
