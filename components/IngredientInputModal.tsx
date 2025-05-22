@@ -129,6 +129,26 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           alignItems: 'center',
           backgroundColor: 'rgba(0,0,0,0.5)'
         }}>
+
+          {/* Close Button */}
+          <TouchableOpacity
+            onPress={onClose}
+            style={{
+            position: 'absolute',
+            top: 100,
+            right: 40,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            padding: 10,
+            borderRadius: 20,
+            zIndex: 20,
+            }}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
+              X
+            </Text>
+
+          </TouchableOpacity>
+
           <ImageBackground source={require('../assets/images/notepad.png')}
             style={{
               position: 'absolute',
