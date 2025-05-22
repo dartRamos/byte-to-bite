@@ -27,7 +27,7 @@ export default function Index() {
 
       <Fridge />
 
-      {/* Show Modal Button on top of image */}
+      {/* Show Modal Button on top of image */} 
       <Pressable
         onPress={() => setShowIngredientsModal(true)}
         style={styles.modalOpen}

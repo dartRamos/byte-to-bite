@@ -1,31 +1,45 @@
 import { v } from "convex/values";
-import { mutation } from "../_generated/server";
+import { mutation, query } from "../_generated/server";
 
+// Create user mutation
 export const createUser = mutation({
-  args:{
-    username: v.string(), // HiDro
-    fullName: v.string(), // Dro Ramos
+  args: {
+    username: v.string(),
+    fullName: v.string(),
     email: v.string(),
-    image: v.string(), // Comes with login in via email
+    image: v.string(),
     clerkId: v.string(),
-    hasSeenWelcome: v.boolean()
+    hasSeenWelcome: v.boolean(),
   },
+  handler: async (ctx, args) => {
+    const existingUser = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
+      .first();
 
-  handler: async(ctx, args) => {
+    if (existingUser) return;
 
-    // Checks if user exists already
-    const existingUser = await ctx.db.query("users").withIndex("by_clerk_id",(q) => q.eq("clerkId", args.clerkId)).first();
-
-
-    if (existingUser) return
-
-    // Creating user in DB
     await ctx.db.insert("users", {
-      username: args.username, 
+      username: args.username,
       fullName: args.fullName,
       email: args.email,
       image: args.image,
       clerkId: args.clerkId,
-    })
-  }
+    });
+  },
+});
+
+// user by clerk id
+export const getUserByClerkId = query({
+  args: {
+    clerkId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
+      .first();
+
+    return user;
+  },
 });
