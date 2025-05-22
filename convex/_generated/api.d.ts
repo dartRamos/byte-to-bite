@@ -16,11 +16,11 @@ import type {
 import type * as config from "../config.js";
 import type * as functions_fetchRecipeByIngredients from "../functions/fetchRecipeByIngredients.js";
 import type * as functions_fetchRecipeByRecipeId from "../functions/fetchRecipeByRecipeId.js";
+import type * as functions_posts from "../functions/posts.js";
 import type * as functions_savedFavorites from "../functions/savedFavorites.js";
-import type * as functions_uploads from "../functions/uploads.js";
 import type * as functions_userIngredients from "../functions/userIngredients.js";
-import type * as functions_users from "../functions/users.js";
 import type * as http from "../http.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -34,11 +34,11 @@ declare const fullApi: ApiFromModules<{
   config: typeof config;
   "functions/fetchRecipeByIngredients": typeof functions_fetchRecipeByIngredients;
   "functions/fetchRecipeByRecipeId": typeof functions_fetchRecipeByRecipeId;
+  "functions/posts": typeof functions_posts;
   "functions/savedFavorites": typeof functions_savedFavorites;
-  "functions/uploads": typeof functions_uploads;
   "functions/userIngredients": typeof functions_userIngredients;
-  "functions/users": typeof functions_users;
   http: typeof http;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

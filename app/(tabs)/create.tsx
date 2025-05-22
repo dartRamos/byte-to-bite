@@ -1,11 +1,14 @@
 import { COLORS } from '@/constants/theme';
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from '@expo/vector-icons';
+import { useMutation } from 'convex/react';
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from 'react';
+import * as FileSystem from "expo-file-system"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { api } from '../../convex/_generated/api';
 
 export default function CreateScreen() {
   const router = useRouter();
@@ -26,7 +29,37 @@ export default function CreateScreen() {
     if(!result.canceled) setSelectImage(result.assets[0].uri)
   }
 
-  console.log(selectImage)
+  const generateUploadUrl = useMutation(api.functions.posts.generateUploadUrl)
+  const createPost = useMutation(api.functions.posts.createPost)
+
+  const handleShare = async () => {
+    if (!selectImage) return;
+
+    try {
+      setIsSharing(true)
+      const uploadUrl = await generateUploadUrl();
+
+      const uploadResult = await FileSystem.uploadAsync(uploadUrl,
+        selectImage, {
+          httpMethod: "POST",
+          uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+          mimeType: "image/jpeg",
+        });
+
+        if(uploadResult.status !== 200) throw new Error("Upload Failed")
+
+        const { storageId } = JSON.parse(uploadResult.body);
+        await createPost({storageId, caption})
+
+        router.push("/(tabs)/profile")
+
+    } catch (err) {
+      console.log("Error uploading post")
+    } finally {
+      setIsSharing(false);
+    }
+  }
+
 
   if (!selectImage) {
     return (
@@ -73,7 +106,7 @@ export default function CreateScreen() {
           <TouchableOpacity
             style={[styless.shareButton, isSharing && styless.shareButtonDisabled]}
             disabled={isSharing || !selectImage}
-            // onPress={handleShare}
+            onPress={handleShare}
             >
             {isSharing ? (
               <ActivityIndicator size='small' color={COLORS.primary} />
@@ -178,18 +211,11 @@ const styless = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  shareTextDisabled: {
-    color: COLORS.grey,
-  },
   emptyImageContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     gap: 12,
-  },
-  emptyImageText: {
-    color: COLORS.grey,
-    fontSize: 16,
   },
   content: {
     flex: 1,

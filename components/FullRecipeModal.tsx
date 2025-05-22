@@ -1,8 +1,5 @@
-// grab the param from View Full Recipe Button and fetch the full recipe data from the API.
-
-// Display the full recipe details.
-
 import React from 'react';
+import FavoriteButton from './FavoriteButton';
 import {
   Modal,
   ScrollView,
@@ -52,7 +49,21 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
                 />
               )}
 
-              <Text style={styles.title}>{recipe.title}</Text>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+                {recipe.title}
+              </Text>
+              
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <FavoriteButton 
+                  recipeId={recipe.id} 
+                  title={recipe.title} 
+                  imageUrl={recipe.image} />
+                <Text style={{ marginLeft: 6, fontSize: 14, color: 'gray' }}>
+                   Save this recipe
+                </Text>
+              </View>
+              
+
               <Text>Ready in: {recipe.readyInMinutes} minutes</Text>
               <Text>Servings: {recipe.servings}</Text>
 

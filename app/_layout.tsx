@@ -1,17 +1,20 @@
 import ClerkAndConvexProviders from "@/providers/ClerkAndConvexProviders";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import InitialLayout from "../components/InitialLayout";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 
 export default function RootLayout() {
   return (
-    <ClerkAndConvexProviders>
+    <FavoritesProvider>
+      <ClerkAndConvexProviders>
+        
+        <SafeAreaProvider>
+          <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+            <InitialLayout />
+          </SafeAreaView>
+        </SafeAreaProvider>
       
-      <SafeAreaProvider>
-        <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-          <InitialLayout />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    
-    </ClerkAndConvexProviders>
+      </ClerkAndConvexProviders>
+    </FavoritesProvider>
   );
 }

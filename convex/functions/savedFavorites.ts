@@ -31,5 +31,27 @@ export const insertSavedRecipe = mutation({
       imageUrl: args.imageUrl,
       isFavorited: args.isFavorited
     });
+
   }
+});
+
+export const removeSavedRecipe = mutation({
+  args: {
+    userId: v.id("users"),
+    recipeId: v.number(),
+  },
+  handler: async (ctx, { userId, recipeId }) => {
+    // Find the saved recipe
+    const savedRecipe = await ctx.db
+      .query("savedRecipes")
+      .withIndex("by_recipeId_and_userId", (q) =>
+        q.eq("recipeId", recipeId).eq("userId", userId)
+      )
+      .unique();
+
+    if (!savedRecipe) return; // Nothing to delete
+
+    // Delete by document id
+    await ctx.db.delete(savedRecipe._id);
+  },
 });

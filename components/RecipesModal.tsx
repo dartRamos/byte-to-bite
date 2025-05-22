@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Recipe = {
   image: string;
@@ -30,15 +30,25 @@ const RecipesModal = ({ isVisible, recipes, onClose, onBack, onSelectRecipe }: R
         </TouchableOpacity>
 
         <ScrollView>
+           
           {recipes.length > 0 && (
             <View>
               {recipes.slice(0, 5).map((recipe, index) => (
-                <View key={index} style={styles.recipeContainer}>
+                <View key={index} style={{ position: 'relative' }}>
                   <Image
                     source={{ uri: recipe.image }}
                     style={styles.recipeImage}
                   />
-                  <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                  <Text style={{
+                    color: "white",
+                    fontSize: 25,
+                    bottom: 0,
+                   
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    flexWrap: 'wrap'
+                  }}>
+                    {recipe.title}
+                  </Text>
 
                   <TouchableOpacity
                     style={styles.viewButton}
@@ -78,25 +88,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
   },
-  recipeContainer: {
-    position: 'relative',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
   recipeImage: {
     width: 400,
     height: 300,
     marginTop: 10,
     borderRadius: 8,
-  },
-  recipeTitle: {
-    color: 'white',
-    fontSize: 25,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginTop: 5,
-    textAlign: 'center',
   },
   viewButton: {
     backgroundColor: '#fff',

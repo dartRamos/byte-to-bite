@@ -110,9 +110,55 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         visible={isVisible && !showRecipeModal}
         onRequestClose={onClose}
       >
-        <SafeAreaView style={styles.safeArea}>
-          <ImageBackground source={require('../assets/images/notepad.png')} style={styles.backgroundImage} />
-          <View style={styles.ingredientListContainer}>
+        <SafeAreaView style={{
+          position: 'relative',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0,0,0,0.5)'
+        }}>
+
+          {/* Close Button */}
+          <TouchableOpacity
+            onPress={onClose}
+            style={{
+            position: 'absolute',
+            top: 100,
+            right: 40,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            padding: 10,
+            borderRadius: 20,
+            zIndex: 20,
+            }}
+          >
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
+              X
+            </Text>
+
+          </TouchableOpacity>
+
+          <ImageBackground source={require('../assets/images/notepad.png')}
+            style={{
+              position: 'absolute',
+              width: 1000,
+              height: 2000,
+              top: -205,
+              borderRadius: 10,
+              overflow: 'hidden',
+            }}
+          />
+          <View style={{
+            position: 'absolute',
+            top: 150,
+            left: '10%',
+            right: '10%',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            padding: 10,
+            borderRadius: 8,
+            gap: 7,
+            zIndex: 10,
+          }}>
             {ingredients.map((item, index) => (
               <Text key={index} style={styles.ingredientText}>
                 • {item}
