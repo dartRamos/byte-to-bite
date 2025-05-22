@@ -51,7 +51,6 @@ const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
   }
 };
 
-
   return (
     <Pressable
       onPress={() => enhancedToggleFavorite(recipeId)}

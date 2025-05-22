@@ -38,6 +38,17 @@ export default function Favorites() {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 16 }}>
+
+      <Text style={{
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 16,
+        color: '#333',
+        textAlign: 'center',
+      }}>
+        All favorite Recipes
+      </Text>
+
       {favorites.map((recipe) => (
         <FavoriteRecipeCard key={recipe.recipeId} recipe={recipe} />
       ))}

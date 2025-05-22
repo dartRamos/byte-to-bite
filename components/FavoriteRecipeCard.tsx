@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, Pressable, StyleSheet, Alert } from 'react-native';
+import FavoriteButton from './FavoriteButton';
 
 type RecipeCardProps = {
   recipe: {
@@ -21,6 +22,12 @@ const FavoriteRecipeCard = ({ recipe }: RecipeCardProps) => {
       >
         <Text style={styles.viewButtonText}>View Full Recipe</Text>
       </Pressable>
+      {/* Pass the recipe data to the FavoriteButton */}
+      <FavoriteButton 
+        recipeId={recipe.recipeId} 
+        title={recipe.title} 
+        imageUrl={recipe.imageUrl} 
+      />
     </View>
   );
 };
