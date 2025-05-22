@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles/auth.styles';
+import FavoriteButton from './FavoriteButton';
 
 type Recipe = {
   image: string;
@@ -49,31 +50,34 @@ const RecipesModal = ({ isVisible, recipes, onClose, onBack, onSelectRecipe }: R
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>X</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.findRecipeButton}
-          onPress={onBack}
-        >
-          <Text>Return to previous modal</Text>
-        </TouchableOpacity>
         <ScrollView>
+           
           {recipes.length > 0 && (
             <View>
               {recipes.slice(0, 5).map((recipe, index) => (
                 <View key={index} style={{ position: 'relative' }}>
+                  
                   <Image
                     source={{ uri: recipe.image }}
                     style={{ width: 400, height: 300, marginTop: 10, borderRadius: 8 }}
                   />
-                  <Text style={{
-                    color: "white",
-                    fontSize: 25,
-                    bottom: 0,
-                   
+                  
+                  {/* Recipe Title and Favorite Button */}
+                  <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                     backgroundColor: 'rgba(0,0,0,0.5)',
-                    flexWrap: 'wrap'
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
                   }}>
-                    {recipe.title}
-                  </Text>
+                    <Text style={{ color: "white", fontSize: 20, flex: 1 }}>
+                      {recipe.title}
+                    </Text>
+                    <FavoriteButton recipeId={recipe.id.toString()} />
+                  </View>
+
+                  
 
                   {/* View Full Recipe Button */}
                   {/* When user taps "View Full Recipe," navigate to FullRecipe screen and pass the recipe ID as a param. */}
