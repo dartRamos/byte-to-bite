@@ -18,8 +18,8 @@ import type * as functions_fetchRecipeByIngredients from "../functions/fetchReci
 import type * as functions_fetchRecipeByRecipeId from "../functions/fetchRecipeByRecipeId.js";
 import type * as functions_savedFavorites from "../functions/savedFavorites.js";
 import type * as functions_userIngredients from "../functions/userIngredients.js";
-import type * as functions_users from "../functions/users.js";
 import type * as http from "../http.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -35,8 +35,8 @@ declare const fullApi: ApiFromModules<{
   "functions/fetchRecipeByRecipeId": typeof functions_fetchRecipeByRecipeId;
   "functions/savedFavorites": typeof functions_savedFavorites;
   "functions/userIngredients": typeof functions_userIngredients;
-  "functions/users": typeof functions_users;
   http: typeof http;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

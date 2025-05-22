@@ -74,7 +74,11 @@ const RecipesModal = ({ isVisible, recipes, onClose, onBack, onSelectRecipe }: R
                     <Text style={{ color: "white", fontSize: 20, flex: 1 }}>
                       {recipe.title}
                     </Text>
-                    <FavoriteButton recipeId={recipe.id.toString()} />
+                    <FavoriteButton 
+                      recipeId={recipe.id} 
+                      title={recipe.title} 
+                      imageUrl={recipe.image}
+                  />
                   </View>
 
                   

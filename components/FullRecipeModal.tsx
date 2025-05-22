@@ -73,7 +73,10 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
               </Text>
               
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <FavoriteButton recipeId={recipe.id.toString()} />
+                <FavoriteButton 
+                  recipeId={recipe.id} 
+                  title={recipe.title} 
+                  imageUrl={recipe.image} />
                 <Text style={{ marginLeft: 6, fontSize: 14, color: 'gray' }}>
                    Save this recipe
                 </Text>
