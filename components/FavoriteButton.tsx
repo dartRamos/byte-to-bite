@@ -7,7 +7,6 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../convex/_generated/api"
 
 
-// Define the expected props 
 type FavoriteButtonProps = {
   recipeId: number; 
   title?: string;
@@ -16,18 +15,17 @@ type FavoriteButtonProps = {
 
 const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
   
-  // Get the isFavorite checker and toggleFavorite function from context
   const { isFavorite, toggleFavorite, favorites } = useFavorites();
   const { user } = useUser();
 
+
   const convexUser = useQuery(api.users.getUserByClerkId, user?.id ? { clerkId: user.id } : "skip");
 
-  // Mutation to insert and delete saved recipe
   const insertSavedRecipe = useMutation(api.functions.savedFavorites.insertSavedRecipe);
   const removeSavedRecipe = useMutation(api.functions.savedFavorites.removeSavedRecipe);
 
   const enhancedToggleFavorite = async (recipeId: number) => {
-    if (!user || !convexUser) return;
+    if (!user || !convexUser) return;  // If convexUser undefined, do nothing
 
     try {
       if (isFavorite(recipeId)) {
@@ -44,14 +42,11 @@ const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
           isFavorited: true,
         });
       }
-
-      // Only update local state after DB operation succeeds
       toggleFavorite(recipeId);
     } catch (error) {
       console.error("Failed to toggle favorite:", error);
     }
   };
-
 
   return (
     <Pressable

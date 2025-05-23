@@ -1,9 +1,9 @@
-import FavoriteRecipeCard from '@/components/FavoriteRecipeCard';
-import FullFavoriteRecipeModal from '@/components/FullFavoriteRecipeModal';
-import { COLORS } from '@/constants/theme';
+import FavoriteRecipeCard from '../../components/FavoriteRecipeCard';
+import FullFavoriteRecipeModal from '../../components/FullFavoriteRecipeModal';
+import { COLORS } from '../../constants/theme';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery, useMutation, useAction } from 'convex/react';
+import { useQuery, useAction } from 'convex/react';
 import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { api } from '../../convex/_generated/api';

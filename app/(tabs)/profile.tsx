@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#121212",
   },
   profileHeader: {
-    flexDirection: "row",    // make items horizontal
-    alignItems: "center",    // vertically center them
+    flexDirection: "row", 
+    alignItems: "center", 
     paddingTop: 40,
     paddingBottom: 20,
     backgroundColor: "#121212",
-    paddingHorizontal: 20,   // add horizontal padding so content isn't flush to edge
+    paddingHorizontal: 20,
   },
   avatar: {
     width: 100,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#ffffff",
-    marginLeft: 20,          // space between image and text
+    marginLeft: 20, 
     textShadowColor: "#61dafb",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 5,

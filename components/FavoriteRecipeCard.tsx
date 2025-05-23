@@ -19,7 +19,7 @@ const FavoriteRecipeCard = ({ recipe, onViewFullRecipe }: RecipeCardProps) => {
 
       <Pressable
         style={styles.viewButton}
-        onPress={() => onViewFullRecipe(recipe.recipeId)}  // call handler here
+        onPress={() => onViewFullRecipe(recipe.recipeId)}
       >
         <Text style={styles.viewButtonText}>View Full Recipe</Text>
       </Pressable>

@@ -4,7 +4,6 @@ import { COLORS } from '@/constants/theme'
 
 export default function TabLayout() {
   return (
-    /*Styles the tabs at the bottom of the screen */
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
@@ -42,13 +41,6 @@ export default function TabLayout() {
         /> 
       }}
       />
-      {/* <Tabs.Screen name="notifications"
-      
-      options={{
-        tabBarIcon: ({size,color}) => <Ionicons name="heart" size={size} color={color}
-        /> 
-      }}
-      /> */}
       <Tabs.Screen name="profile"
       
       options={{

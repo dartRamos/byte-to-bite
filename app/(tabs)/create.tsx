@@ -266,7 +266,7 @@ const styless = StyleSheet.create({
     color: COLORS.white,
     fontSize: 20,
     fontWeight: "600",
-    backgroundColor: COLORS.surface, // add a visible background
+    backgroundColor: COLORS.surface,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
