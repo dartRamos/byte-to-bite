@@ -110,7 +110,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         onRequestClose={onClose}
       >
         <SafeAreaView style={styles.safeArea}>
-
+  
           {/* Close Button */}
           <View style={styles.header}>
             {/* Left Side */}
@@ -120,7 +120,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               </TouchableOpacity>
               <Text style={styles.headerTitle}>Home</Text>
             </View>
-
+  
             {/* Right Side */}
             <View style={styles.headerRight}>
               <Text style={styles.headerTitle}>Find Recipe</Text>
@@ -128,47 +128,52 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
                 <Ionicons name="search" size={28} color="white" />
               </TouchableOpacity>
             </View>
-        </View>
-
-          <ImageBackground source={require('../assets/images/notepad.png')}
+          </View>
+  
+          {/* Notepad background */}
+          <ImageBackground
+            source={require('../assets/images/notepad.png')}
             style={styles.backgroundImage}
           />
-
+  
+          {/* Content container */}
           <View style={styles.contentContainer}>
-
-            {/* Input Row fixed at top */}
+  
+            {/* Input Row fixed at top, positioned over notepad */}
             <View style={styles.inputRow}>
-            <TextInput
-              style={[authStyles.input, {
-                width: 163, // or '70%', or whatever fixed width you want
-                height: 40,
-                paddingVertical: 8,
-                overflow: 'hidden',
-                flexShrink: 0, // prevents shrinking in flex layouts
-              }]}
-              onChangeText={setText}
-              value={text}
-              placeholder="Enter All Ingredients"
-              onSubmitEditing={handleAddIngredient}
-              multiline={false}
-            />
-              <TouchableOpacity
-                style={authStyles.findRecipeButton}
-                onPress={handleAddIngredient}
-              >
-                <Text>Add Ingredients</Text>
-              </TouchableOpacity>
+              <TextInput
+                style={[authStyles.input, {
+                  width: 303,
+                  height: 100,
+                  paddingVertical: 8,
+                  color: '#000', // dark text for visibility
+                  backgroundColor: 'transparent', // transparent input background
+                  borderWidth: 0,
+                  borderRadius: 0,
+                  overflow: 'hidden',
+                  flexShrink: 0,
+                  fontFamily: 'Pencil', // handwriting style font (optional)
+                  fontSize: 20,
+                  textAlignVertical: 'top'
+                }]}
+                onChangeText={setText}
+                value={text}
+                placeholder="Enter All Ingredients"
+                placeholderTextColor="grey" // subtle placeholder
+                onSubmitEditing={handleAddIngredient}
+                multiline={false}
+              />
             </View>
-
+  
             <View style={styles.editButtonRow}>
               <TouchableOpacity
-                style={authStyles.findRecipeButton}
+                style={styles.findRecipeButton}
                 onPress={handleEditList}
               >
-                <Text>Undo Last</Text>
+                <Text style={{fontSize: 20, fontFamily: 'Pencil' }} >Undo</Text>
               </TouchableOpacity>
             </View>
-
+  
             {/* Ingredients list below input */}
             <View style={styles.ingredientListContainer}>
               {ingredients.map((item, index) => (
@@ -177,11 +182,11 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
                 </Text>
               ))}
             </View>
-
+  
           </View>
         </SafeAreaView>
       </Modal>
-
+  
       {showRecipeModal && (
         <RecipesModal
           isVisible={!showFullRecipeModal}
@@ -191,7 +196,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           onBack={() => setShowRecipeModal(false)}
         />
       )}
-
+  
       <FullRecipeModal
         isVisible={showFullRecipeModal}
         recipe={selectedRecipe}
@@ -202,6 +207,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
       />
     </>
   );
+  
 }
 
 const styles = StyleSheet.create({
@@ -245,7 +251,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 1000,
     height: 2000,
-    top: 0,
+    top: -100,
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -268,7 +274,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 10,
     marginLeft: 30,
-    left: 200
+    left: 245,
+    top: 245
+  },
+  findRecipeButton: {
+    borderWidth: 1,
+    backgroundColor: "transparent",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 10,
   },
   ingredientListContainer: {
     width: '90%',
@@ -276,7 +290,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 10,
     justifyContent: 'flex-start',
-    top: 140,
+    top: 10,
     left: 20
   },
   ingredientText: {

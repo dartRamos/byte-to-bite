@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
-import { useUser } from '@clerk/clerk-expo';
-import { useQuery } from 'convex/react';
-import { api } from '../../convex/_generated/api';  
 import FavoriteRecipeCard from '@/components/FavoriteRecipeCard';
-import FullFavoriteRecipeModal from '@/components/FullFavoriteRecipeModal';  // import your modal
+import FullFavoriteRecipeModal from '@/components/FullFavoriteRecipeModal';
+import { COLORS } from '@/constants/theme';
+import { useUser } from '@clerk/clerk-expo';
+import { Ionicons } from '@expo/vector-icons';
+import { useQuery } from 'convex/react';
+import React, { useState } from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { api } from '../../convex/_generated/api';
 
 
 
@@ -64,35 +66,39 @@ export default function Favorites() {
 
   if (favorites.length === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>No favorites saved yet!</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
+        <Text style={{fontSize: 18, fontWeight: "600", color: COLORS.white,}}>No favorites saved yet!</Text>
+        <Ionicons name="heart-dislike" size={50} color={"white"}/>
       </View>
     );
   }
 
   return (
     <>
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
-        <Text style={{
-          fontSize: 24,
-          fontWeight: 'bold',
-          marginBottom: 16,
-          color: '#333',
-          textAlign: 'center',
-        }}>
-          All favorite Recipes
-        </Text>
-
-        {favorites?.map((recipe) => (
-          <FavoriteRecipeCard
-            key={recipe.recipeId}
-            recipe={recipe}
-            onViewFullRecipe={openFullRecipe}  // pass the handler 
-          />
-        ))}
+      <ScrollView style={{ backgroundColor: '#121212' }}>
+        <View>
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: 'bold',
+              marginBottom: 16,
+              color: '#fff', // also change text color to white for contrast
+              textAlign: 'center',
+            }}
+          >
+            All favorite Recipes
+          </Text>
+  
+          {favorites?.map((recipe) => (
+            <FavoriteRecipeCard
+              key={recipe.recipeId}
+              recipe={recipe}
+              onViewFullRecipe={openFullRecipe}
+            />
+          ))}
+        </View>
       </ScrollView>
-
-      {/* Full recipe modal */}
+  
       <FullFavoriteRecipeModal
         isVisible={isModalVisible}
         recipe={selectedRecipe}
@@ -100,4 +106,5 @@ export default function Favorites() {
       />
     </>
   );
+  
 }
