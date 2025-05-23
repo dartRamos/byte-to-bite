@@ -25,7 +25,7 @@ const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
   const removeSavedRecipe = useMutation(api.functions.savedFavorites.removeSavedRecipe);
 
   const enhancedToggleFavorite = async (recipeId: number) => {
-    if (!user || !convexUser) return;  // If convexUser undefined, do nothing
+    if (!user || !convexUser) return;
 
     try {
       if (isFavorite(recipeId)) {

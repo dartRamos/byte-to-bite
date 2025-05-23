@@ -11,13 +11,11 @@ import { api } from '../../convex/_generated/api';
 export default function Favorites() {
   const { user } = useUser();
 
-  // Fetch Convex user by Clerk ID
   const convexUser = useQuery(
     api.users.getUserByClerkId,
     user?.id ? { clerkId: user.id } : "skip"
   );
 
-  // Fetch favorites by Convex user ID
   const favorites = useQuery(
     api.functions.getFavoriteByUser.getFavoritesByUser,
     convexUser?._id ? { userId: convexUser._id } : "skip"
@@ -33,18 +31,17 @@ export default function Favorites() {
     isFavorited: boolean;
   };
 
-  // State for modal and full recipe details from Spoonacular
+
   const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
   const [fullRecipeDetails, setFullRecipeDetails] = useState<any | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  // Mutation to fetch full recipe info from Spoonacular API
+
   const fetchRecipeById = useAction(api.functions.fetchRecipeByRecipeId.fetchRecipeById);
 
-  // Open modal handler
+
   const openFullRecipe = async (recipeId: number) => {
     try {
-      // Fetch full recipe details from API
       const fullRecipe = await fetchRecipeById({ id: recipeId });
       setFullRecipeDetails(fullRecipe);
       setSelectedRecipeId(recipeId);
@@ -54,7 +51,6 @@ export default function Favorites() {
     }
   };
 
-  // Close modal handler
   const closeModal = () => {
     setModalVisible(false);
     setSelectedRecipeId(null);

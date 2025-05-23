@@ -38,7 +38,6 @@ export default function Fridge() {
           style={styles.fridge}
         />
   
-        {/* Recipe images */}
         {favorites.slice(0, 5).map((recipe, index) => {
           const position = imagePositions[index];
           return (

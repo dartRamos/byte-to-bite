@@ -27,7 +27,6 @@ export default function Index() {
 
         <Fridge />
 
-        {/* Pressable overlay */}
         <Pressable
           onPress={() => setShowIngredientsModal(true)}
           style={{
@@ -36,7 +35,7 @@ export default function Index() {
             left: 130,
             width: 150,
             height: 170,
-            zIndex: 100, // Make sure it’s on top
+            zIndex: 100,
           }}
         />
 

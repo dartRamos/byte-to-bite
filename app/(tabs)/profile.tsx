@@ -4,14 +4,7 @@ import { COLORS } from "@/constants/theme";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { useQuery } from "convex/react";
 import React from "react";
-import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+import {ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View,
 } from "react-native";
 import { api } from "../../convex/_generated/api";
 import { Ionicons } from "@expo/vector-icons";
@@ -47,7 +40,6 @@ export default function UserProfile() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.profileHeader}>
         <TouchableOpacity style={styles.logoutButton}onPress={() => signOut()}>
           <Ionicons name="log-out-outline" size={40} color={"#E53935"} />
@@ -57,7 +49,6 @@ export default function UserProfile() {
         <Text style={styles.name}>{dbUser.fullName}</Text>
       </View>
 
-      {/* Posts or NoPostsFound */}
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={{ alignItems: "center", paddingBottom: 100 }}

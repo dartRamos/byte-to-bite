@@ -12,7 +12,6 @@ type RecipesModalProps = {
   isVisible: boolean;
   recipes: Recipe[];
   onClose: () => void;
-  onBack?: () => void; // optional
   onSelectRecipe: (id: number) => void;
 };
 
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 20, // Safe area spacing
+    paddingTop: 20,
     paddingHorizontal: 20,
     paddingBottom: 10,
     backgroundColor: 'rgba(0,0,0,0.8)',

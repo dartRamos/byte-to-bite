@@ -110,10 +110,8 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         onRequestClose={onClose}
       >
         <SafeAreaView style={styles.safeArea}>
-  
-          {/* Close Button */}
+
           <View style={styles.header}>
-            {/* Left Side */}
             <View style={styles.headerLeft}>
               <TouchableOpacity onPress={onClose}>
                 <Ionicons name="arrow-back" size={28} color="white" />
@@ -121,7 +119,6 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               <Text style={styles.headerTitle}>Home</Text>
             </View>
   
-            {/* Right Side */}
             <View style={styles.headerRight}>
               <Text style={styles.headerTitle}>Find Recipe</Text>
               <TouchableOpacity onPress={getRecipeByIngredients}>
@@ -130,36 +127,33 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
             </View>
           </View>
   
-          {/* Notepad background */}
           <ImageBackground
             source={require('../assets/images/notepad.png')}
             style={styles.backgroundImage}
           />
-  
-          {/* Content container */}
+
           <View style={styles.contentContainer}>
   
-            {/* Input Row fixed at top, positioned over notepad */}
             <View style={styles.inputRow}>
               <TextInput
                 style={[authStyles.input, {
                   width: 303,
                   height: 100,
                   paddingVertical: 8,
-                  color: '#000', // dark text for visibility
-                  backgroundColor: 'transparent', // transparent input background
+                  color: '#000',
+                  backgroundColor: 'transparent',
                   borderWidth: 0,
                   borderRadius: 0,
                   overflow: 'hidden',
                   flexShrink: 0,
-                  fontFamily: 'Pencil', // handwriting style font (optional)
+                  fontFamily: 'Pencil',
                   fontSize: 20,
                   textAlignVertical: 'top'
                 }]}
                 onChangeText={setText}
                 value={text}
                 placeholder="Enter All Ingredients"
-                placeholderTextColor="grey" // subtle placeholder
+                placeholderTextColor="grey"
                 onSubmitEditing={handleAddIngredient}
                 multiline={false}
               />
@@ -174,7 +168,6 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               </TouchableOpacity>
             </View>
   
-            {/* Ingredients list below input */}
             <View style={styles.ingredientListContainer}>
               {ingredients.map((item, index) => (
                 <Text key={index} style={styles.ingredientText}>
@@ -193,7 +186,6 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           recipes={recipes}
           onClose={() => setShowRecipeModal(false)}
           onSelectRecipe={handleSelectRecipe}
-          onBack={() => setShowRecipeModal(false)}
         />
       )}
   
@@ -258,7 +250,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     width: '100%',
-    paddingTop: 20, // space below header
+    paddingTop: 20,
     alignItems: 'center',
   },
   inputRow: {
@@ -266,7 +258,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 20, // space below inputs
+    marginBottom: 20,
     left: 30
   },
   editButtonRow: {
