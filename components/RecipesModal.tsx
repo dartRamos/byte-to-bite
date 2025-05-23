@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -26,9 +27,12 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
     >
       <SafeAreaView style={styles.modalContainer}>
 
-        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-          <Text style={styles.closeText}>X</Text>
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="arrow-back" size={28} color="white" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Ingredients</Text>
+        </View>
 
         <ScrollView>
            
@@ -68,6 +72,22 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
 };
 
 const styles = StyleSheet.create({
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 20, // Safe area spacing
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    zIndex: 10,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 12,
+  },
   modalContainer: {
     position: 'relative',
     flex: 1,

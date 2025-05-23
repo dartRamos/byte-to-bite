@@ -2,11 +2,11 @@ import { COLORS } from '@/constants/theme';
 import { useUser } from "@clerk/clerk-expo";
 import { Ionicons } from '@expo/vector-icons';
 import { useMutation } from 'convex/react';
+import * as FileSystem from "expo-file-system";
 import { Image } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { useState } from 'react';
-import * as FileSystem from "expo-file-system"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { api } from '../../convex/_generated/api';
 
@@ -24,10 +24,10 @@ export default function CreateScreen() {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
-    })
+    });
 
     if(!result.canceled) setSelectImage(result.assets[0].uri)
-  }
+  };
 
   const generateUploadUrl = useMutation(api.functions.posts.generateUploadUrl)
   const createPost = useMutation(api.functions.posts.createPost)
@@ -72,8 +72,15 @@ export default function CreateScreen() {
           <View style={{ width: 28}} />
         </View>
 
-        <TouchableOpacity onPress={pickImage} style={styless.emptyImageContainer}>
-          <Ionicons name="image-outline" size={48} color={COLORS.primary}/>
+        <TouchableOpacity 
+          onPress={pickImage} 
+          style={styless.emptyImageContainer}
+        >
+          <Ionicons 
+            name="image-outline" 
+            size={48} 
+            color={COLORS.grey}
+          />
           <Text style={styless.headerTitle}>Tap to select an image.</Text>
         </TouchableOpacity>
         <View style={{width: 28}}/>
@@ -84,7 +91,7 @@ export default function CreateScreen() {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styless.container}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 40}
     >
       <View style={styless.contentContainer}>
 
@@ -143,13 +150,14 @@ export default function CreateScreen() {
             </View>
 
             <View style={styless.inputSection}>
-              <View style={styless.captionContainer}></View>
+              <View style={styless.captionContainer}>
+
                 <Image 
                   source={user?.imageUrl}
                   style={styless.userAvatar}
                   contentFit='cover'
                   transition={200}
-                />
+                  />
                 <TextInput 
                   style={styless.captionInput}
                   placeholder='Write a caption'
@@ -158,11 +166,10 @@ export default function CreateScreen() {
                   value={caption}
                   onChangeText={setCaption}
                   editable={!isSharing}
-                />
+                  />
+              </View>
             </View>
-
           </View>
-
         </ScrollView>
       </View>
     </KeyboardAvoidingView>
@@ -269,6 +276,6 @@ const styless = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     paddingTop: 8,
-    minHeight: 40,
+    minHeight: 40
   },
 });

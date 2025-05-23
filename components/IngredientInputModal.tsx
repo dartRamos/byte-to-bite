@@ -5,6 +5,7 @@ import { api } from '../convex/_generated/api';
 import { styles as authStyles } from '../styles/auth.styles';
 import RecipesModal from "./RecipesModal";
 import FullRecipeModal from "./FullRecipeModal";
+import { Ionicons } from "@expo/vector-icons";
 
 type Recipe = {
   title: string;
@@ -97,10 +98,8 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   };
 
   const handleEditList = () => {
-    if (ingredients.length > 0) {
-      setIngredients([]);
-    }
-  }
+    setIngredients(prev => prev.slice(0, -1));
+  };
 
   return (
     <>
@@ -110,71 +109,49 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         visible={isVisible && !showRecipeModal}
         onRequestClose={onClose}
       >
-        <SafeAreaView style={{
-          position: 'relative',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(0,0,0,0.5)'
-        }}>
+        <SafeAreaView style={styles.safeArea}>
 
           {/* Close Button */}
-          <TouchableOpacity
-            onPress={onClose}
-            style={{
-            position: 'absolute',
-            top: 100,
-            right: 40,
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            padding: 10,
-            borderRadius: 20,
-            zIndex: 20,
-            }}
-          >
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>
-              X
-            </Text>
+          <View style={styles.header}>
+            {/* Left Side */}
+            <View style={styles.headerLeft}>
+              <TouchableOpacity onPress={onClose}>
+                <Ionicons name="arrow-back" size={28} color="white" />
+              </TouchableOpacity>
+              <Text style={styles.headerTitle}>Home</Text>
+            </View>
 
-          </TouchableOpacity>
+            {/* Right Side */}
+            <View style={styles.headerRight}>
+              <Text style={styles.headerTitle}>Find Recipe</Text>
+              <TouchableOpacity onPress={getRecipeByIngredients}>
+                <Ionicons name="search" size={28} color="white" />
+              </TouchableOpacity>
+            </View>
+        </View>
 
           <ImageBackground source={require('../assets/images/notepad.png')}
-            style={{
-              position: 'absolute',
-              width: 1000,
-              height: 2000,
-              top: -205,
-              borderRadius: 10,
-              overflow: 'hidden',
-            }}
+            style={styles.backgroundImage}
           />
-          <View style={{
-            position: 'absolute',
-            top: 150,
-            left: '10%',
-            right: '10%',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            padding: 10,
-            borderRadius: 8,
-            gap: 7,
-            zIndex: 10,
-          }}>
-            {ingredients.map((item, index) => (
-              <Text key={index} style={styles.ingredientText}>
-                • {item}
-              </Text>
-            ))}
-          </View>
 
-          {ingredients.length === 0 ? (
+          <View style={styles.contentContainer}>
+
+            {/* Input Row fixed at top */}
             <View style={styles.inputRow}>
-              <TextInput
-                style={authStyles.input}
-                onChangeText={setText}
-                value={text}
-                placeholder="Enter All Ingredients"
-                onSubmitEditing={handleAddIngredient}
-              />
+            <TextInput
+              style={[authStyles.input, {
+                width: 163, // or '70%', or whatever fixed width you want
+                height: 40,
+                paddingVertical: 8,
+                overflow: 'hidden',
+                flexShrink: 0, // prevents shrinking in flex layouts
+              }]}
+              onChangeText={setText}
+              value={text}
+              placeholder="Enter All Ingredients"
+              onSubmitEditing={handleAddIngredient}
+              multiline={false}
+            />
               <TouchableOpacity
                 style={authStyles.findRecipeButton}
                 onPress={handleAddIngredient}
@@ -182,22 +159,26 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
                 <Text>Add Ingredients</Text>
               </TouchableOpacity>
             </View>
-          ) : (
-            <View style={styles.inputRow}>
-              <TouchableOpacity
-                style={authStyles.findRecipeButton}
-                onPress={getRecipeByIngredients}
-              >
-                <Text>Find Recipe!</Text>
-              </TouchableOpacity>
+
+            <View style={styles.editButtonRow}>
               <TouchableOpacity
                 style={authStyles.findRecipeButton}
                 onPress={handleEditList}
               >
-                <Text>Edit List</Text>
+                <Text>Undo Last</Text>
               </TouchableOpacity>
             </View>
-          )}
+
+            {/* Ingredients list below input */}
+            <View style={styles.ingredientListContainer}>
+              {ingredients.map((item, index) => (
+                <Text key={index} style={styles.ingredientText}>
+                  • {item}
+                </Text>
+              ))}
+            </View>
+
+          </View>
         </SafeAreaView>
       </Modal>
 
@@ -217,7 +198,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
         onClose={() => {
           setSelectedRecipe(null);
           setShowFullRecipeModal(false);
-      }}
+        }}
       />
     </>
   );
@@ -227,36 +208,81 @@ const styles = StyleSheet.create({
   safeArea: {
     position: 'relative',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    zIndex: 10,
+  },
+  
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 12,
   },
   backgroundImage: {
     position: 'absolute',
     width: 1000,
     height: 2000,
-    top: -205,
+    top: 0,
     borderRadius: 10,
     overflow: 'hidden',
   },
-  ingredientListContainer: {
-    position: 'absolute',
-    top: 150,
-    left: '10%',
-    right: '10%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    padding: 10,
-    borderRadius: 8,
-    gap: 7,
-    zIndex: 10,
-  },
-  ingredientText: {
-    fontSize: 20,
+  contentContainer: {
+    flex: 1,
+    width: '100%',
+    paddingTop: 20, // space below header
+    alignItems: 'center',
   },
   inputRow: {
-    top: 170,
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 10,
+    marginBottom: 20, // space below inputs
+    left: 30
+  },
+  editButtonRow: {
+    width: '90%',
+    alignItems: 'flex-start',
+    marginBottom: 10,
+    marginLeft: 30,
+    left: 200
+  },
+  ingredientListContainer: {
+    width: '90%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    justifyContent: 'flex-start',
+    top: 140,
+    left: 20
+  },
+  ingredientText: {
+    fontSize: 25,
+    marginRight: 8,
+    marginBottom: 8,
+    fontFamily: 'Pencil',
   },
 });

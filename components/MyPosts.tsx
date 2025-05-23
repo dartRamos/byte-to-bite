@@ -2,13 +2,36 @@ import { COLORS } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";
+import { useUser } from "@clerk/clerk-expo"
+import { useMutation, useQuery } from "convex/react";
+import { api } from "../convex/_generated/api";
 
 export default function MyPosts({ post }: { post: any }) {
+
+  const { user } = useUser();
+
+  const currentUser = useQuery(api.users.getUserByClerkId, user ? {
+  clerkId: user?.id} : "skip");
+
+  const deletePost = useMutation(api.functions.posts.deletePost)
+
+  const handleDelete =  async () => {
+    try {
+      await deletePost({ postId: post._id });
+    } catch (err) {
+      console.error("Error deleting post:", err);
+    }
+  }
+
   return (
     <View style={styles.post}>
       <View style={styles.postHeader}>
         <TouchableOpacity>
-          <Ionicons name="trash-outline" size={20} color={COLORS.primary} />
+          <Ionicons 
+            name="trash-outline" 
+            size={20} color={COLORS.primary}
+            onPress={handleDelete} 
+          />
         </TouchableOpacity>
       </View>
 

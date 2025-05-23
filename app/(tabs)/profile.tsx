@@ -14,6 +14,7 @@ import {
   View,
 } from "react-native";
 import { api } from "../../convex/_generated/api";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function UserProfile() {
   const { isLoaded, user } = useUser();
@@ -48,8 +49,8 @@ export default function UserProfile() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.profileHeader}>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => signOut()}>
-          <Text style={styles.logoutText}>Logout</Text>
+        <TouchableOpacity style={styles.logoutButton}onPress={() => signOut()}>
+          <Ionicons name="log-out-outline" size={40} color={"#E53935"} />
         </TouchableOpacity>
 
         <Image source={{ uri: dbUser.image }} style={styles.avatar} />
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     right: 20,
-    backgroundColor: "#ff4757",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,

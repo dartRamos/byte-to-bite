@@ -28,7 +28,7 @@ export default function TabLayout() {
           /> 
         }}
       />
-      <Tabs.Screen name="bookmarks"
+      <Tabs.Screen name="favorites"
       
       options={{
         tabBarIcon: ({size,color}) => <Ionicons name="heart" size={size} color={color}
@@ -38,7 +38,7 @@ export default function TabLayout() {
       <Tabs.Screen name="create"
       
       options={{
-        tabBarIcon: ({size,color}) => <Ionicons name="add-circle" size={size} color={COLORS.primary}
+        tabBarIcon: ({size,color}) => <Ionicons name="add-circle" size={size} color={color}
         /> 
       }}
       />

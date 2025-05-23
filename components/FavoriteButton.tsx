@@ -25,31 +25,33 @@ const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
   // Mutation to insert and delete saved recipe
   const insertSavedRecipe = useMutation(api.functions.savedFavorites.insertSavedRecipe);
   const removeSavedRecipe = useMutation(api.functions.savedFavorites.removeSavedRecipe);
-  
 
-  // New toggleFavorite with mutation call
   const enhancedToggleFavorite = async (recipeId: number) => {
-    if (!user || !convexUser) return; // Wait until both are loaded
+    if (!user || !convexUser) return;
 
-    if (isFavorite(recipeId)) {
-      // Call remove mutation to delete from DB
-    await removeSavedRecipe({
-      userId: convexUser?._id, // Use convexUser's DB id here, not Clerk user id
-      recipeId,
-    });
-    toggleFavorite(recipeId); // update local state
-  } else {
-    // Call insert mutation
-    await insertSavedRecipe({
-      userId: convexUser?._id,
-      recipeId,
-      title: title || "",
-      imageUrl: imageUrl || "",
-      isFavorited: true,
-    });
-    toggleFavorite(recipeId);
-  }
-};
+    try {
+      if (isFavorite(recipeId)) {
+        await removeSavedRecipe({
+          userId: convexUser._id,
+          recipeId,
+        });
+      } else {
+        await insertSavedRecipe({
+          userId: convexUser._id,
+          recipeId,
+          title: title || "",
+          imageUrl: imageUrl || "",
+          isFavorited: true,
+        });
+      }
+
+      // Only update local state after DB operation succeeds
+      toggleFavorite(recipeId);
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error);
+    }
+  };
+
 
   return (
     <Pressable
