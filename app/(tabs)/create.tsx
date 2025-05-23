@@ -17,6 +17,7 @@ export default function CreateScreen() {
   const [caption, setCaption] = useState("");
   const [selectImage, setSelectImage] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
+  const [title, setTitle] = useState("");
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -49,7 +50,7 @@ export default function CreateScreen() {
         if(uploadResult.status !== 200) throw new Error("Upload Failed")
 
         const { storageId } = JSON.parse(uploadResult.body);
-        await createPost({storageId, caption})
+        await createPost({storageId, caption, title})
 
         router.push("/(tabs)/profile")
 
@@ -66,27 +67,21 @@ export default function CreateScreen() {
       <View style={styless.container}>
         <View style={styless.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={28} color={COLORS.primary}/>
+            <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
           </TouchableOpacity>
           <Text style={styless.headerTitle}>New Post</Text>
-          <View style={{ width: 28}} />
+          <View style={{ width: 28 }} />
         </View>
 
-        <TouchableOpacity 
-          onPress={pickImage} 
-          style={styless.emptyImageContainer}
-        >
-          <Ionicons 
-            name="image-outline" 
-            size={48} 
-            color={COLORS.grey}
-          />
+        <TouchableOpacity onPress={pickImage} style={styless.emptyImageContainer}>
+          <Ionicons name="image-outline" size={48} color={COLORS.grey} />
           <Text style={styless.headerTitle}>Tap to select an image.</Text>
         </TouchableOpacity>
-        <View style={{width: 28}}/>
+        <View style={{ width: 28 }} />
       </View>
-    )
+    );
   }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -94,32 +89,32 @@ export default function CreateScreen() {
       keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 40}
     >
       <View style={styless.contentContainer}>
-
         <View style={styless.header}>
           <TouchableOpacity
             onPress={() => {
               setSelectImage(null);
               setCaption("");
+              setTitle("");
             }}
             disabled={isSharing}
-            >
-            <Ionicons 
+          >
+            <Ionicons
               name="close-outline"
               size={28}
               color={isSharing ? COLORS.grey : COLORS.white}
-              />
+            />
           </TouchableOpacity>
           <Text style={styless.headerTitle}>New Post</Text>
           <TouchableOpacity
             style={[styless.shareButton, isSharing && styless.shareButtonDisabled]}
             disabled={isSharing || !selectImage}
             onPress={handleShare}
-            >
+          >
             {isSharing ? (
-              <ActivityIndicator size='small' color={COLORS.primary} />
-              ) : (
+              <ActivityIndicator size="small" color={COLORS.primary} />
+            ) : (
               <Text style={styless.shareText}>Share</Text>
-              )}
+            )}
           </TouchableOpacity>
         </View>
 
@@ -128,15 +123,13 @@ export default function CreateScreen() {
           bounces={false}
           keyboardShouldPersistTaps="handled"
         >
-          <View
-            style={[styless.content, isSharing && styless.contentDisabled]}
-          >
+          <View style={[styless.content, isSharing && styless.contentDisabled]}>
             {/* Image Section */}
             <View style={styless.imageSection}>
-              <Image 
+              <Image
                 source={selectImage}
                 style={styless.previewImage}
-                contentFit='cover'
+                contentFit="cover"
                 transition={200}
               />
               <TouchableOpacity
@@ -144,36 +137,44 @@ export default function CreateScreen() {
                 onPress={pickImage}
                 disabled={isSharing}
               >
-                <Ionicons name="image-outline" size={20} color={COLORS.white}/>
+                <Ionicons name="image-outline" size={20} color={COLORS.white} />
                 <Text style={styless.changeImageText}>Change</Text>
               </TouchableOpacity>
             </View>
 
             <View style={styless.inputSection}>
-              <View style={styless.captionContainer}>
+              <TextInput
+                style={styless.titleInput}
+                placeholder="Recipe Title"
+                placeholderTextColor={COLORS.grey}
+                value={title}
+                onChangeText={setTitle}
+                editable={!isSharing}
+              />
 
-                <Image 
+              <View style={styless.captionContainer}>
+                <Image
                   source={user?.imageUrl}
                   style={styless.userAvatar}
-                  contentFit='cover'
+                  contentFit="cover"
                   transition={200}
-                  />
-                <TextInput 
+                />
+                <TextInput
                   style={styless.captionInput}
-                  placeholder='Write a caption'
+                  placeholder="Write a caption"
                   placeholderTextColor={COLORS.grey}
                   multiline
                   value={caption}
                   onChangeText={setCaption}
                   editable={!isSharing}
-                  />
+                />
               </View>
             </View>
           </View>
         </ScrollView>
       </View>
     </KeyboardAvoidingView>
-  )
+  );
 }
 
 const { width } = Dimensions.get("window");
@@ -261,6 +262,16 @@ const styless = StyleSheet.create({
     padding: 16,
     flex: 1,
   },
+  titleInput: {
+    color: COLORS.white,
+    fontSize: 20,
+    fontWeight: "600",
+    backgroundColor: COLORS.surface, // add a visible background
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
   captionContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
@@ -276,6 +287,6 @@ const styless = StyleSheet.create({
     color: COLORS.white,
     fontSize: 16,
     paddingTop: 8,
-    minHeight: 40
+    minHeight: 40,
   },
 });

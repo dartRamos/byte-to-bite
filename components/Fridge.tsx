@@ -34,7 +34,7 @@ export default function Fridge() {
     <View style={styles.container}>
       <View style={styles.fridgeWrapper}>
         <Image
-          source={require('../assets/images/fridge.png')}
+          source={require('../assets/images/fullfridge.png')}
           style={styles.fridge}
         />
   

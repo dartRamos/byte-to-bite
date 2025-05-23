@@ -10,7 +10,8 @@ export const generateUploadUrl = mutation(async (ctx) => {
 export const createPost = mutation({
   args:{
     caption: v.optional(v.string()),
-    storageId: v.id("_storage")
+    storageId: v.id("_storage"),
+    title: v.optional(v.string())
   },
 
   handler: async (ctx, args) => {
@@ -30,6 +31,7 @@ export const createPost = mutation({
       imageUrl,
       storageId: args.storageId,
       caption: args.caption,
+      title: args.title,
     });
 
     await ctx.db.patch(currentUser._id, {

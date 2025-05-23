@@ -33,5 +33,6 @@ export default defineSchema({
     imageUrl: v.string(),
     storageId: v.id('_storage'),
     caption: v.optional(v.string()),
+    title: v.optional(v.string()),
   }).index("by_user", ["userId"]),
 })

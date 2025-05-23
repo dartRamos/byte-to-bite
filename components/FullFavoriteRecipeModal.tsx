@@ -1,47 +1,29 @@
 import React from 'react';
-import {
-  Modal,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  SafeAreaView,
-  ScrollView
-} from 'react-native';
+import { Modal, Text, TouchableOpacity, View, Image, SafeAreaView, ScrollView } from 'react-native';
 
-type SavedRecipe = {
-  _id: string;
-  recipeId: number;
+type FullRecipe = {
+  id: number;
   title: string;
-  imageUrl: string;
-  isFavorited: boolean;
+  readyInMinutes: number;
+  servings: number;
+  instructions: string;
+  image: string;
+  extendedIngredients: { id: number; name: string; amount: number; unit: string }[];
 };
 
-type FullSavedRecipeModalProps = {
+type FullFavoriteRecipeModalProps = {
   isVisible: boolean;
-  recipe: SavedRecipe | null;
+  recipe: FullRecipe | null;
   onClose: () => void;
 };
 
-const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullSavedRecipeModalProps) => {
+const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRecipeModalProps) => {
   if (!recipe) return null;
 
   return (
-    <Modal
-      visible={isVisible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={onClose}
-    >
+    <Modal visible={isVisible} animationType="slide" transparent={true} onRequestClose={onClose}>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 20,
-          }}
-        >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
           <View
             style={{
               width: '100%',
@@ -52,28 +34,28 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullSavedRecipe
             }}
           >
             <ScrollView>
-              {recipe.imageUrl && (
+              {recipe.image && (
                 <Image
-                  source={{ uri: recipe.imageUrl }}
-                  style={{
-                    width: '100%',
-                    height: 200,
-                    borderRadius: 10,
-                    marginBottom: 10,
-                  }}
+                  source={{ uri: recipe.image }}
+                  style={{ width: '100%', height: 200, borderRadius: 10, marginBottom: 10 }}
                   resizeMode="cover"
                 />
               )}
 
-              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
-                {recipe.title}
-              </Text>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>{recipe.title}</Text>
 
-              
+              <Text>Ready in: {recipe.readyInMinutes} minutes</Text>
+              <Text>Servings: {recipe.servings}</Text>
 
-              <Text style={{ marginBottom: 10 }}>
-                Favorite: {recipe.isFavorited ? 'Yes' : 'No'}
-              </Text>
+              <Text style={{ marginVertical: 10, fontWeight: 'bold' }}>Ingredients:</Text>
+              {recipe.extendedIngredients.map((ingredient) => (
+                <Text key={ingredient.id}>
+                  - {ingredient.amount} {ingredient.unit} {ingredient.name}
+                </Text>
+              ))}
+
+              <Text style={{ marginVertical: 10, fontWeight: 'bold' }}>Instructions:</Text>
+              <Text>{recipe.instructions}</Text>
 
               <TouchableOpacity
                 onPress={onClose}

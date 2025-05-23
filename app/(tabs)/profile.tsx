@@ -79,31 +79,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#121212",
   },
   profileHeader: {
-    alignItems: "center",
-    paddingTop: 60,
-    paddingBottom: 30,
+    flexDirection: "row",    // make items horizontal
+    alignItems: "center",    // vertically center them
+    paddingTop: 40,
+    paddingBottom: 20,
     backgroundColor: "#121212",
+    paddingHorizontal: 20,   // add horizontal padding so content isn't flush to edge
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: "#61dafb",
+    shadowColor: "#61dafb",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 8,
   },
   name: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#ffffff",
-    marginTop: 16,
+    marginLeft: 20,          // space between image and text
     textShadowColor: "#61dafb",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 5,
-  },
-  avatar: {
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-    borderWidth: 4,
-    borderColor: "#61dafb",
-    shadowColor: "#61dafb",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.6,
-    shadowRadius: 10,
-    elevation: 10,
   },
   logoutButton: {
     position: "absolute",
@@ -113,11 +115,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 20,
     elevation: 4,
-  },
-  logoutText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 14,
   },
   scroll: {
     flex: 1,
@@ -130,6 +127,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#121212",
   },
 });
+
+
 
 const NoPostsFound = () => (
   <View style={{ marginTop: 40, alignItems: "center" }}>

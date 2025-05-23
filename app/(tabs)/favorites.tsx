@@ -3,12 +3,10 @@ import FullFavoriteRecipeModal from '@/components/FullFavoriteRecipeModal';
 import { COLORS } from '@/constants/theme';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from 'convex/react';
+import { useQuery, useMutation, useAction } from 'convex/react';
 import React, { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { api } from '../../convex/_generated/api';
-
-
 
 export default function Favorites() {
   const { user } = useUser();
@@ -26,34 +24,41 @@ export default function Favorites() {
   );
 
   type SavedRecipe = {
-  _id: string;  // or your specific Id type
-  _creationTime: number;
-  userId: string;  // or your specific Id type
-  recipeId: number;
-  title: string;
-  imageUrl: string;
-  isFavorited: boolean;
-};
+    _id: string;
+    _creationTime: number;
+    userId: string;
+    recipeId: number;
+    title: string;
+    imageUrl: string;
+    isFavorited: boolean;
+  };
 
-  // State for modal
-  const [selectedRecipe, setSelectedRecipe] = useState<SavedRecipe | null>(null);
+  // State for modal and full recipe details from Spoonacular
+  const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
+  const [fullRecipeDetails, setFullRecipeDetails] = useState<any | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
+  // Mutation to fetch full recipe info from Spoonacular API
+  const fetchRecipeById = useAction(api.functions.fetchRecipeByRecipeId.fetchRecipeById);
+
   // Open modal handler
-  const openFullRecipe = (recipeId: number) => {
-  const recipe = favorites?.find(r => r.recipeId === recipeId);
-  if (!recipe) return;
-
-  setSelectedRecipe(recipe);
-  setModalVisible(true);
-};
-
-
+  const openFullRecipe = async (recipeId: number) => {
+    try {
+      // Fetch full recipe details from API
+      const fullRecipe = await fetchRecipeById({ id: recipeId });
+      setFullRecipeDetails(fullRecipe);
+      setSelectedRecipeId(recipeId);
+      setModalVisible(true);
+    } catch (error) {
+      console.error("Failed to fetch full recipe details", error);
+    }
+  };
 
   // Close modal handler
   const closeModal = () => {
     setModalVisible(false);
-    setSelectedRecipe(null);
+    setSelectedRecipeId(null);
+    setFullRecipeDetails(null);
   };
 
   if (!favorites) {
@@ -67,8 +72,10 @@ export default function Favorites() {
   if (favorites.length === 0) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#121212' }}>
-        <Text style={{fontSize: 18, fontWeight: "600", color: COLORS.white,}}>No favorites saved yet!</Text>
-        <Ionicons name="heart-dislike" size={50} color={"white"}/>
+        <Text style={{ fontSize: 18, fontWeight: "600", color: COLORS.white }}>
+          No favorites saved yet!
+        </Text>
+        <Ionicons name="heart-dislike" size={50} color={"white"} />
       </View>
     );
   }
@@ -82,29 +89,28 @@ export default function Favorites() {
               fontSize: 24,
               fontWeight: 'bold',
               marginBottom: 16,
-              color: '#fff', // also change text color to white for contrast
+              color: '#fff',
               textAlign: 'center',
             }}
           >
-            All favorite Recipes
+            All Favorite Recipes
           </Text>
-  
-          {favorites?.map((recipe) => (
+
+          {favorites.map((recipe) => (
             <FavoriteRecipeCard
               key={recipe.recipeId}
               recipe={recipe}
-              onViewFullRecipe={openFullRecipe}
+              onViewFullRecipe={() => openFullRecipe(recipe.recipeId)}
             />
           ))}
         </View>
       </ScrollView>
-  
+
       <FullFavoriteRecipeModal
         isVisible={isModalVisible}
-        recipe={selectedRecipe}
+        recipe={fullRecipeDetails}
         onClose={closeModal}
       />
     </>
   );
-  
 }

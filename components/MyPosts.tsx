@@ -26,12 +26,11 @@ export default function MyPosts({ post }: { post: any }) {
   return (
     <View style={styles.post}>
       <View style={styles.postHeader}>
-        <TouchableOpacity>
-          <Ionicons 
-            name="trash-outline" 
-            size={20} color={COLORS.primary}
-            onPress={handleDelete} 
-          />
+        <Text style={styles.postTitle} numberOfLines={1} ellipsizeMode="tail">
+          {post.title}
+        </Text>
+        <TouchableOpacity onPress={handleDelete}>
+          <Ionicons name="trash-outline" size={20} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
 
@@ -61,6 +60,14 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 12,
+  },
+  postTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: COLORS.white,
+    flex: 1,
+    textAlign: "left",
+    marginRight: 10,
   },
   postImage: {
     width: width,
