@@ -118,13 +118,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
               </TouchableOpacity>
               <Text style={styles.headerTitle}>Home</Text>
             </View>
-  
-            <View style={styles.headerRight}>
-              <Text style={styles.headerTitle}>Find Recipe</Text>
-              <TouchableOpacity onPress={getRecipeByIngredients}>
-                <Ionicons name="search" size={28} color="white" />
-              </TouchableOpacity>
-            </View>
+            
           </View>
   
           <ImageBackground
@@ -164,7 +158,17 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
                 style={styles.findRecipeButton}
                 onPress={handleEditList}
               >
-                <Text style={{fontSize: 20, fontFamily: 'Pencil' }} >Undo</Text>
+                <Text style={styles.buttonText}>Undo</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.findRecipeButton}
+                onPress={getRecipeByIngredients}
+              >
+                <Text style={styles.buttonText}>Find Recipe
+                  <Ionicons name="search" size={28} color="black" />
+                </Text>
+                
               </TouchableOpacity>
             </View>
   
@@ -261,13 +265,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     left: 30
   },
+
   editButtonRow: {
     width: '90%',
-    alignItems: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 12,
     marginBottom: 10,
-    marginLeft: 30,
-    left: 245,
-    top: 245
+    top: 180,
+    paddingHorizontal: 20,
+    
+
   },
   findRecipeButton: {
     borderWidth: 1,
@@ -275,6 +284,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 10,
+    
   },
   ingredientListContainer: {
     width: '90%',
@@ -291,4 +301,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontFamily: 'Pencil',
   },
+
+  buttonText: {
+  fontSize: 20,
+  fontFamily: 'Pencil',
+},
 });
