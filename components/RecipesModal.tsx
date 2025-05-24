@@ -47,13 +47,21 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
               <View key={recipe.id} style={styles.card}>
                 <Image source={{ uri: recipe.image }} style={styles.image} />
                 <Text style={styles.title}>{recipe.title}</Text>
-                <TouchableOpacity
-                  style={styles.viewButton}
-                  onPress={() => onSelectRecipe(recipe.id)}
-                >
-                  <Text style={styles.viewButtonText}>View Full Recipe</Text>
+                <View style={styles.actions}>
+                  <TouchableOpacity
+                    style={styles.viewButton}
+                    onPress={() => onSelectRecipe(recipe.id)}
+                  >
+                    <Text style={styles.viewButtonText}>View Full Recipe</Text>
+                  </TouchableOpacity>
                   
-                </TouchableOpacity>
+                  <FavoriteButton
+                    recipeId={recipe.id}
+                    title={recipe.title}
+                    imageUrl={recipe.image}
+                  />
+                </View>
+                
                 
                 
               </View>
@@ -127,6 +135,12 @@ const styles = StyleSheet.create({
     color: '#666',
     fontWeight: '600',
     fontSize: 14,
+  },
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center', // ensures vertical alignment
+    marginTop: 10,
   },
 });
 
