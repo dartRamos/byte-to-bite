@@ -27,6 +27,15 @@ type FullRecipeModalProps = {
   onClose: () => void;
 };
 
+// helper to remove remove <ol>, <ul> tags coming from API
+const extractSteps = (html: string): string[] => {
+  return html
+    .replace(/<\/?ol>|<\/?ul>/g, '') 
+    .split(/<\/li>\s*/i)  
+    .map(item => item.replace(/<li>/i, '').trim()) 
+    .filter(step => step.length > 0); 
+};
+
 const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) => {
   if (!recipe) return null;
 
@@ -75,7 +84,9 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
               ))}
 
               <Text style={styles.sectionHeader}>Instructions:</Text>
-              <Text>{recipe.instructions}</Text>
+                {extractSteps(recipe.instructions).map((step, index) => (
+                  <Text key={index} style={{ marginBottom: 8 }}>{step}</Text>
+                ))}
 
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <Text style={styles.closeButtonText}>Close</Text>
