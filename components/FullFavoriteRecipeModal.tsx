@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Text, TouchableOpacity, View, Image, SafeAreaView, ScrollView } from 'react-native';
+import { Modal, Text, TouchableOpacity, View, Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
 type FullRecipe = {
   id: number;
@@ -17,7 +17,6 @@ type FullFavoriteRecipeModalProps = {
   onClose: () => void;
 };
 
-// helper to remove remove <ol>, <ul> tags coming from API
 const extractSteps = (html: string): string[] => {
   return html
     .replace(/<\/?ol>|<\/?ul>/g, '') 
@@ -31,58 +30,39 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRec
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true} onRequestClose={onClose}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)' }}>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
-          <View
-            style={{
-              width: '100%',
-              maxHeight: '80%',
-              backgroundColor: 'white',
-              borderRadius: 10,
-              padding: 15,
-            }}
-          >
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <View style={styles.modalContent}>
+
+            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
+              <Text style={styles.closeIconText}>×</Text>
+            </TouchableOpacity>
+
             <ScrollView>
               {recipe.image && (
                 <Image
                   source={{ uri: recipe.image }}
-                  style={{ width: '100%', height: 200, borderRadius: 10, marginBottom: 10 }}
+                  style={styles.image}
                   resizeMode="cover"
                 />
               )}
 
-              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>{recipe.title}</Text>
+              <Text style={styles.title}>{recipe.title}</Text>
 
-              <Text>Ready in: {recipe.readyInMinutes} minutes</Text>
-              <Text>Servings: {recipe.servings}</Text>
+              <Text style={styles.bodyText}>Ready in: {recipe.readyInMinutes} minutes</Text>
+              <Text style={styles.bodyText}>Servings: {recipe.servings}</Text>
 
-              <Text style={{ marginVertical: 10, fontWeight: 'bold' }}>Ingredients:</Text>
+              <Text style={styles.sectionHeader}>Ingredients:</Text>
               {recipe.extendedIngredients.map((ingredient) => (
-                <Text key={ingredient.id}>
-                  - {ingredient.amount} {ingredient.unit} {ingredient.name}
+                <Text key={ingredient.id} style={styles.ingredientText}>
+                  • {ingredient.amount} {ingredient.unit} {ingredient.name}
                 </Text>
               ))}
 
-              <Text style={{ marginVertical: 10, fontWeight: 'bold' }}>
-                Instructions:</Text>
+              <Text style={styles.sectionHeader}>Instructions:</Text>
               {extractSteps(recipe.instructions).map((step, index) => (
-                <Text key={index} style={{ marginBottom: 5 }}>
-                  {step}
-                </Text>
+                <Text key={index} style={styles.bodyText}>{step}</Text>
               ))}
-
-              <TouchableOpacity
-                onPress={onClose}
-                style={{
-                  marginTop: 20,
-                  padding: 10,
-                  backgroundColor: '#2196F3',
-                  borderRadius: 5,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
-              </TouchableOpacity>
             </ScrollView>
           </View>
         </View>
@@ -90,5 +70,89 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRec
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    width: '100%',
+    maxHeight: '80%',
+    backgroundColor: '#fffde7',
+    borderRadius: 24,
+    padding: 24,
+    borderWidth: 2,
+    borderColor: '#fbc02d',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  image: {
+    width: '100%',
+    height: 220,
+    borderRadius: 16,
+    marginBottom: 16,
+    marginTop: 10,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#ff7043',
+    marginBottom: 10,
+  },
+  sectionHeader: {
+    marginTop: 20,
+    marginBottom: 6,
+    fontWeight: '700',
+    fontSize: 18,
+    color: '#ff7043',
+    borderBottomWidth: 1,
+    borderBottomColor: '#fbc02d',
+    paddingBottom: 4,
+  },
+  ingredientText: {
+    fontSize: 15,
+    color: '#333',
+    marginBottom: 4,
+  },
+  bodyText: {
+    fontSize: 15,
+    color: '#333',
+    marginBottom: 8,
+    lineHeight: 22,
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    zIndex: 10,
+    backgroundColor: '#fbc02d',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  closeIconText: {
+    fontSize: 28,
+    color: '#212121',
+    fontWeight: 'bold',
+    lineHeight: 28,
+  },
+});
 
 export default FullFavoriteRecipeModal;
