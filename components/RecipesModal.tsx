@@ -1,6 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import FavoriteButton from './FavoriteButton';
 
 type Recipe = {
   image: string;
@@ -24,52 +34,43 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
       onRequestClose={onClose}
     >
       <SafeAreaView style={styles.modalContainer}>
-
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose}>
             <Ionicons name="arrow-back" size={28} color="white" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Ingredients</Text>
+          <Text style={styles.headerTitle}>Back to Ingredients</Text>
         </View>
 
-        <ScrollView>
-           
-          {recipes.length > 0 && (
-            <View>
-              {recipes.slice(0, 5).map((recipe, index) => (
-                <View key={index} style={{ position: 'relative' }}>
-                  <Image
-                    source={{ uri: recipe.image }}
-                    style={styles.recipeImage}
-                  />
-                  <Text style={{
-                    color: "white",
-                    fontSize: 25,
-                    bottom: 0,
-                   
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    flexWrap: 'wrap'
-                  }}>
-                    {recipe.title}
-                  </Text>
-
-                  <TouchableOpacity
-                    style={styles.viewButton}
-                    onPress={() => onSelectRecipe(recipe.id)}
-                  >
-                    <Text style={styles.viewButtonText}>View Full Recipe</Text>
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-          )}
-        </ScrollView>
+        <View style={styles.modalContent}>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {recipes.slice(0, 5).map((recipe) => (
+              <View key={recipe.id} style={styles.card}>
+                <Image source={{ uri: recipe.image }} style={styles.image} />
+                <Text style={styles.title}>{recipe.title}</Text>
+                <TouchableOpacity
+                  style={styles.viewButton}
+                  onPress={() => onSelectRecipe(recipe.id)}
+                >
+                  <Text style={styles.viewButtonText}>View Full Recipe</Text>
+                  
+                </TouchableOpacity>
+                
+                
+              </View>
+              
+            ))}
+          </ScrollView>
+        </View>
       </SafeAreaView>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
   header: {
     width: '100%',
     flexDirection: 'row',
@@ -86,55 +87,46 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 12,
   },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  modalContainer: {
-    position: 'relative',
+  modalContent: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    margin: 20,
   },
-  closeButton: {
-    position: 'absolute',
-    top: 100,
-    right: 20,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 10,
+  card: {
+    marginBottom: 20,
+    backgroundColor: '#fffde7',
     borderRadius: 20,
-    zIndex: 20,
+    padding: 20,
+    borderWidth: 2,
+    borderColor: '#fbc02d',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 6,
   },
-  closeText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18,
+  image: {
+    width: '100%',
+    height: 220,
+    borderRadius: 16,
   },
-  recipeImage: {
-    width: 400,
-    height: 300,
-    marginTop: 10,
-    borderRadius: 8,
+  title: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#ff7043',
+    marginVertical: 16,
   },
   viewButton: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 6,
-    alignSelf: 'center',
-    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#bbb',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    alignSelf: 'flex-start',
   },
   viewButtonText: {
-    color: '#333',
-    fontWeight: 'bold',
+    color: '#666',
+    fontWeight: '600',
+    fontSize: 14,
   },
 });
 
