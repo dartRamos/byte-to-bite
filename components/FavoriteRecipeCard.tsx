@@ -15,20 +15,26 @@ const FavoriteRecipeCard = ({ recipe, onViewFullRecipe }: RecipeCardProps) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
+
       <Text style={styles.title}>{recipe.title}</Text>
 
-      <Pressable
-        style={styles.viewButton}
-        onPress={() => onViewFullRecipe(recipe.recipeId)}
-      >
-        <Text style={styles.viewButtonText}>View Full Recipe</Text>
-      </Pressable>
+      <View style={styles.buttonsRow}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.viewButton,
+            pressed && styles.viewButtonPressed,
+          ]}
+          onPress={() => onViewFullRecipe(recipe.recipeId)}
+        >
+          <Text style={styles.viewButtonText}>View Full Recipe</Text>
+        </Pressable>
 
-      <FavoriteButton 
-        recipeId={recipe.recipeId} 
-        title={recipe.title} 
-        imageUrl={recipe.imageUrl} 
-      />
+        <FavoriteButton 
+          recipeId={recipe.recipeId} 
+          title={recipe.title} 
+          imageUrl={recipe.imageUrl} 
+        />
+      </View>
     </View>
   );
 };
@@ -36,31 +42,52 @@ const FavoriteRecipeCard = ({ recipe, onViewFullRecipe }: RecipeCardProps) => {
 const styles = StyleSheet.create({
   card: {
     marginBottom: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    backgroundColor: '#fffde7',
+    borderRadius: 20,
     overflow: 'hidden',
-    elevation: 3,
-    padding: 12,
+    padding: 20,
+    borderWidth: 2,
+    borderColor: '#fbc02d',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 6,
   },
   image: {
     width: '100%',
-    height: 200,
-    borderRadius: 10,
+    height: 220,
+    borderRadius: 16,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 12,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#ff7043',
+    marginVertical: 16,
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 12,
   },
   viewButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 10,
-    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#bbb',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: 5,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+  },
+  viewButtonPressed: {
+    backgroundColor: '#eee',
+    borderColor: '#999',
   },
   viewButtonText: {
-    color: 'white',
+    color: '#666',
     fontWeight: '600',
+    fontSize: 14,
   },
 });
 
