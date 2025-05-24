@@ -15,16 +15,18 @@ export default function RootLayout() {
   }
 
   return (
-    <FavoritesProvider>
+    
       <ClerkAndConvexProviders>
+        <FavoritesProvider>
         
-        <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
-            <InitialLayout />
-          </SafeAreaView>
-        </SafeAreaProvider>
+          <SafeAreaProvider>
+            <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+              <InitialLayout />
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </FavoritesProvider>
       
       </ClerkAndConvexProviders>
-    </FavoritesProvider>
+    
   );
 }

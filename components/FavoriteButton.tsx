@@ -1,65 +1,47 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFavorites } from '../context/FavoritesContext' 
-import { useUser } from '@clerk/clerk-expo';
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../convex/_generated/api"
 
 
 type FavoriteButtonProps = {
-  recipeId: number; 
-  title?: string;
-  imageUrl?: string;
+  recipeId: number;
+  title: string;
+  imageUrl: string;
 };
 
 const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
-  
-  const { isFavorite, toggleFavorite, favorites } = useFavorites();
-  const { user } = useUser();
-
-
-  const convexUser = useQuery(api.users.getUserByClerkId, user?.id ? { clerkId: user.id } : "skip");
-
-  const insertSavedRecipe = useMutation(api.functions.savedFavorites.insertSavedRecipe);
-  const removeSavedRecipe = useMutation(api.functions.savedFavorites.removeSavedRecipe);
-
-  const enhancedToggleFavorite = async (recipeId: number) => {
-    if (!user || !convexUser) return;
-
-    try {
-      if (isFavorite(recipeId)) {
-        await removeSavedRecipe({
-          userId: convexUser._id,
-          recipeId,
-        });
-      } else {
-        await insertSavedRecipe({
-          userId: convexUser._id,
-          recipeId,
-          title: title || "",
-          imageUrl: imageUrl || "",
-          isFavorited: true,
-        });
-      }
-      toggleFavorite(recipeId);
-    } catch (error) {
-      console.error("Failed to toggle favorite:", error);
-    }
-  };
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const favorited = isFavorite(recipeId);
 
   return (
     <Pressable
-      onPress={() => enhancedToggleFavorite(recipeId)}
-      accessibilityLabel={isFavorite(recipeId) ? 'Remove from favorites' : 'Add to favorites'}
+      onPress={() => toggleFavorite(recipeId, title, imageUrl)}
+      style={({ pressed }) => [
+        styles.button,
+        pressed && styles.pressed,
+      ]}
+      accessibilityLabel={favorited ? `Unfavorite ${title}` : `Favorite ${title}`}
+      accessibilityRole="button"
     >
       <Ionicons
-        name={isFavorite(recipeId) ? 'heart' : 'heart-outline'}
+        name={favorited ? 'heart' : 'heart-outline'}
         size={28}
-        color={isFavorite(recipeId) ? 'tomato' : 'gray'}
+        color={favorited ? '#ff6b6b' : '#444'}
       />
     </Pressable>
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+});
 
 export default FavoriteButton;

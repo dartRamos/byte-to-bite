@@ -12,6 +12,7 @@ type RecipeCardProps = {
 };
 
 const FavoriteRecipeCard = ({ recipe, onViewFullRecipe }: RecipeCardProps) => {
+ 
   return (
     <View style={styles.card}>
       <Image source={{ uri: recipe.imageUrl }} style={styles.image} />
