@@ -27,7 +27,7 @@ type FullRecipeModalProps = {
   onClose: () => void;
 };
 
-// helper to remove remove <ol>, <ul> tags coming from API
+// helper to remove <ol>, <ul> tags coming from API
 const extractSteps = (html: string): string[] => {
   return html
     .replace(/<\/?ol>|<\/?ul>/g, '') 
@@ -49,6 +49,11 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <View style={styles.modalContent}>
+
+            <TouchableOpacity onPress={onClose} style={styles.closeIcon}>
+              <Text style={styles.closeIconText}>×</Text>
+            </TouchableOpacity>
+
             <ScrollView>
               {recipe.image && (
                 <Image
@@ -58,39 +63,34 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
                 />
               )}
 
-              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+              <Text style={styles.title}>
                 {recipe.title}
               </Text>
               
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={styles.favoriteRow}>
                 <FavoriteButton 
                   recipeId={recipe.id} 
                   title={recipe.title} 
                   imageUrl={recipe.image} />
-                <Text style={{ marginLeft: 6, fontSize: 14, color: 'gray' }}>
+                <Text style={styles.saveText}>
                    Save this recipe
                 </Text>
               </View>
               
-
-              <Text>Ready in: {recipe.readyInMinutes} minutes</Text>
-              <Text>Servings: {recipe.servings}</Text>
+              <Text style={styles.bodyText}>Ready in: {recipe.readyInMinutes} minutes</Text>
+              <Text style={styles.bodyText}>Servings: {recipe.servings}</Text>
 
               <Text style={styles.sectionHeader}>Ingredients:</Text>
               {recipe.extendedIngredients.map((ingredient) => (
-                <Text key={ingredient.id}>
-                  - {ingredient.amount} {ingredient.unit} {ingredient.name}
+                <Text key={ingredient.id} style={styles.ingredientText}>
+                  • {ingredient.amount} {ingredient.unit} {ingredient.name}
                 </Text>
               ))}
 
               <Text style={styles.sectionHeader}>Instructions:</Text>
-                {extractSteps(recipe.instructions).map((step, index) => (
-                  <Text key={index} style={{ marginBottom: 8 }}>{step}</Text>
-                ))}
-
-              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
+              {extractSteps(recipe.instructions).map((step, index) => (
+                <Text key={index} style={styles.bodyText}>{step}</Text>
+              ))}
             </ScrollView>
           </View>
         </View>
@@ -102,7 +102,7 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   container: {
     flex: 1,
@@ -112,36 +112,84 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '100%',
-    maxHeight: '80%',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 15,
+    maxHeight: '85%',
+    backgroundColor: '#fffde7', 
+    borderRadius: 24,
+    padding: 24,
+    borderWidth: 2,
+    borderColor: '#fbc02d', 
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 6,
   },
   image: {
     width: '100%',
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 10,
+    height: 220,
+    borderRadius: 16,
+    marginBottom: 16,
+    marginTop: 10,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#ff7043', 
     marginBottom: 10,
   },
-  sectionHeader: {
-    marginTop: 15,
-    fontWeight: 'bold',
-  },
-  closeButton: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: '#2196F3',
-    borderRadius: 5,
+  favoriteRow: {
+    flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 12,
   },
-  closeButtonText: {
-    color: 'white',
+  saveText: {
+    marginLeft: 6,
+    fontSize: 14,
+    color: '#757575', // medium gray
+  },
+  sectionHeader: {
+    marginTop: 20,
+    marginBottom: 6,
+    fontWeight: '700',
+    fontSize: 18,
+    color: '#ff7043', // coral accent for headings
+    borderBottomWidth: 1,
+    borderBottomColor: '#fbc02d',
+    paddingBottom: 4,
+  },
+  ingredientText: {
+    fontSize: 15,
+    color: '#333',
+    marginBottom: 4,
+  },
+  bodyText: {
+    fontSize: 15,
+    color: '#333',
+    marginBottom: 8,
+    lineHeight: 22,
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    zIndex: 10,
+    backgroundColor: '#fbc02d', // solid golden yellow
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  closeIconText: {
+    fontSize: 28,
+    color: '#212121', // dark text
     fontWeight: 'bold',
+    lineHeight: 28,
   },
 });
 
