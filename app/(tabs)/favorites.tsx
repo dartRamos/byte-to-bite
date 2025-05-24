@@ -1,19 +1,19 @@
-import FavoriteRecipeCard from '../../components/FavoriteRecipeCard';
-import FullFavoriteRecipeModal from '../../components/FullFavoriteRecipeModal';
 import { useUser } from '@clerk/clerk-expo';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery, useAction } from 'convex/react';
+import { useNavigation } from '@react-navigation/native';
+import { useAction, useQuery } from 'convex/react';
 import React, { useState } from 'react';
 import {
+  SafeAreaView,
   ScrollView,
-  Text,
-  View,
   StyleSheet,
+  Text,
   TouchableOpacity,
-  SafeAreaView
+  View
 } from 'react-native';
+import FavoriteRecipeCard from '../../components/FavoriteRecipeCard';
+import FullFavoriteRecipeModal from '../../components/FullFavoriteRecipeModal';
 import { api } from '../../convex/_generated/api';
-import { useNavigation } from '@react-navigation/native';
 
 export default function Favorites() {
   const navigation = useNavigation();
@@ -72,6 +72,7 @@ export default function Favorites() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={28} color="white" />
@@ -92,7 +93,7 @@ export default function Favorites() {
         {/* Back to Home Button */}
         <TouchableOpacity
           style={styles.backToHomeButton}
-          onPress={() => navigation.navigate('index')}
+          onPress={() => navigation.navigate('index' as never)}
         >
           <Text style={styles.backToHomeButtonText}>Back to Home</Text>
         </TouchableOpacity>
@@ -114,19 +115,19 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
     backgroundColor: 'rgba(0,0,0,0.8)',
     zIndex: 10,
   },
   headerTitle: {
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: "600",
   },
   scrollView: {
     backgroundColor: '#121212',
@@ -166,11 +167,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: 'white',
-  },
+},
 
-  backToHomeButtonText: {
-    color: 'white',
-    fontWeight: '600',
-    fontSize: 14,
-  },
+backToHomeButtonText: {
+  color: 'white',
+  fontWeight: '600',
+  fontSize: 14,
+},
 });
