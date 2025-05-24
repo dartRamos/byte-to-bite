@@ -17,6 +17,15 @@ type FullFavoriteRecipeModalProps = {
   onClose: () => void;
 };
 
+// helper to remove remove <ol>, <ul> tags coming from API
+const extractSteps = (html: string): string[] => {
+  return html
+    .replace(/<\/?ol>|<\/?ul>/g, '') 
+    .split(/<\/li>\s*/i)  
+    .map(item => item.replace(/<li>/i, '').trim()) 
+    .filter(step => step.length > 0); 
+};
+
 const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRecipeModalProps) => {
   if (!recipe) return null;
 
@@ -54,8 +63,13 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRec
                 </Text>
               ))}
 
-              <Text style={{ marginVertical: 10, fontWeight: 'bold' }}>Instructions:</Text>
-              <Text>{recipe.instructions}</Text>
+              <Text style={{ marginVertical: 10, fontWeight: 'bold' }}>
+                Instructions:</Text>
+              {extractSteps(recipe.instructions).map((step, index) => (
+                <Text key={index} style={{ marginBottom: 5 }}>
+                  {step}
+                </Text>
+              ))}
 
               <TouchableOpacity
                 onPress={onClose}
