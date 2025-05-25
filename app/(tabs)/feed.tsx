@@ -3,15 +3,7 @@ import { Loader } from "@/components/Loader";
 import { COLORS } from "@/constants/theme";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import {
-  Dimensions,
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-  FlatList,
-  Platform,
-} from "react-native";
+import { Dimensions, View, StyleSheet, Text, Animated, Platform } from "react-native";
 import MyPosts from "@/components/MyPosts";
 
 const { width, height } = Dimensions.get("window");
@@ -86,7 +78,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    top: 0,
+    top: 8,
     height: height * 10,
     backgroundColor: "transparent",
     zIndex: 0,

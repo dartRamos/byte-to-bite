@@ -23,6 +23,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
+  logoImage: {
+    width: 500,
+    height: 100,
+    marginBottom: 12,
+  },
   appName: {
     fontSize: 42,
     fontWeight: "700",
@@ -33,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 16,
-    color: COLORS.grey,
+    color: "#fff8c4",
     letterSpacing: 1,
     textTransform: "lowercase",
   },

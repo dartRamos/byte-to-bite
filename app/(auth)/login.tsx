@@ -2,7 +2,7 @@ import { COLORS } from '@/constants/theme'
 import { useSSO } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View, Image } from 'react-native'
 import { styles } from '../../styles/auth.styles'
 
 export default function login() {
@@ -27,7 +27,7 @@ export default function login() {
     <View style={styles.container}>  
       {/* Brand Section */}
       <View style={styles.brandSection}>
-        <Text style={styles.appName}>Byte to Bite</Text>
+        <Image source={require("../../assets/images/logo.png")} style={styles.logoImage} />
         <Text style={styles.tagline}>one bite is never enough!</Text>
         </View>
 
