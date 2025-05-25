@@ -63,7 +63,6 @@ http.route({
           image: image_url,
           clerkId: id,
           username: email.split("@")[0],
-          hasSeenWelcome: false,
           posts: 0 
         })
       } catch (err) {

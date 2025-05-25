@@ -9,7 +9,6 @@ export const createUser = mutation({
     email: v.string(),
     image: v.string(),
     clerkId: v.string(),
-    hasSeenWelcome: v.boolean(),
     posts: v.number()
   },
   handler: async (ctx, args) => {

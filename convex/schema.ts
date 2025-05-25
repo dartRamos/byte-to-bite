@@ -28,6 +28,19 @@ export default defineSchema({
     .index("by_recipeId_and_userId", ["recipeId", "userId"])
     .index("by_userId", ["userId"]),
 
+    likes: defineTable({
+      userId: v.id("users"),
+      postId: v.id("posts"),
+    }).index("by_post", ["postId"])
+      .index("by_user_and_post", ["userId", "postId"]),
+
+  comments: defineTable({
+    userId: v.id("users"),
+    postId: v.id("posts"),
+    content: v.string(),
+  }).index("by_post", ["postId"])
+    .index("by_user", ["userId"]),
+
   posts: defineTable({
     userId: v.id("users"),
     imageUrl: v.string(),

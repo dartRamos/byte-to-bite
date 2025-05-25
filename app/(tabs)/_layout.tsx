@@ -48,6 +48,13 @@ export default function TabLayout() {
         /> 
       }}
       />
+      <Tabs.Screen name="feed"
+      
+        options={{
+        tabBarIcon: ({size,color}) => <Ionicons name="list-circle" size={size} color={color}
+        /> 
+      }}
+      />
     </Tabs>
   )
 }

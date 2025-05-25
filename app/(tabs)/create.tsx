@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { api } from '../../convex/_generated/api';
 
+
 export default function CreateScreen() {
   const router = useRouter();
   const { user } = useUser();
@@ -52,7 +53,7 @@ export default function CreateScreen() {
         const { storageId } = JSON.parse(uploadResult.body);
         await createPost({storageId, caption, title})
 
-        router.push("/(tabs)/profile")
+        router.push("/(tabs)/feed")
 
     } catch (err) {
       console.log("Error uploading post")
@@ -288,5 +289,6 @@ const styless = StyleSheet.create({
     fontSize: 16,
     paddingTop: 8,
     minHeight: 40,
+    
   },
 });
