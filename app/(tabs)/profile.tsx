@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   name: {
-    fontSize: 45,
+    fontSize: 30,
     color: "#e0b300",
     marginLeft: 20, 
     textShadowColor: "#f8bbd0",

@@ -1,9 +1,8 @@
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 import { useAction, useQuery } from 'convex/react';
+import React, { useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { api } from '../convex/_generated/api';
-import React, {useState} from 'react';
-import { COLORS } from '@/constants/theme';
 
 import FullFavoriteRecipeModal from './FullFavoriteRecipeModal';
 
@@ -82,10 +81,6 @@ export default function Fridge() {
           );
         })}
   
-        <Image 
-          source={require('../assets/images/magnets.png')}
-          style={styles.magnets}
-        />
 
         <FullFavoriteRecipeModal
           isVisible={isModalVisible}
@@ -119,15 +114,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 8,
   },
-  magnets: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: 435,
-    height: 900,
-    zIndex: 20,
-    pointerEvents: 'none', // allow touch events to pass through
-  },
+ 
   recipeImageWrapper: {
     position: 'absolute',
     width: 80,
