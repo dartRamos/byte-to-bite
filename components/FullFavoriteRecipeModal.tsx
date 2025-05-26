@@ -53,8 +53,8 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRec
               <Text style={styles.bodyText}>Servings: {recipe.servings}</Text>
 
               <Text style={styles.sectionHeader}>Ingredients:</Text>
-              {recipe.extendedIngredients.map((ingredient) => (
-                <Text key={ingredient.id} style={styles.ingredientText}>
+              {recipe.extendedIngredients.map((ingredient, index) => (
+                <Text key={`${ingredient.id}-${index}`} style={styles.ingredientText}>
                   • {ingredient.amount} {ingredient.unit} {ingredient.name}
                 </Text>
               ))}
