@@ -48,6 +48,7 @@ export default defineSchema({
     caption: v.optional(v.string()),
     title: v.optional(v.string()),
     comments: v.number(),
+    likes: v.number(),
   }).index("by_user", ["userId"]),
 
   bookmarks: defineTable({

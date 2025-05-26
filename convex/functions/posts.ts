@@ -33,6 +33,7 @@ export const createPost = mutation({
       caption: args.caption,
       title: args.title,
       comments: 0,
+      likes: 0
     });
 
     await ctx.db.patch(currentUser._id, {
@@ -127,7 +128,9 @@ export const deletePost = mutation({
 });
 
 export const toggleLike = mutation({
-  args:{postId: v.id("posts")},
+  args:{
+    postId: v.id("posts")
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
@@ -143,20 +146,24 @@ export const toggleLike = mutation({
     const post = await ctx.db.get(args.postId);
     if (!post) throw new Error("Post not found.");
 
-    const like = await ctx.db
+    const existing = await ctx.db
       .query("likes")
       .withIndex("by_user_and_post", (q) => 
       q.eq("userId", currentUser._id).eq("postId", post._id))
       .first();
 
-    if (like) {
-      await ctx.db.delete(like._id);
+    if (existing) {
+      await ctx.db.delete(existing._id);
+      await ctx.db.patch(args.postId, { likes: post.likes - 1});
       return false;
+
     } else {
+      
       await ctx.db.insert("likes", {
         userId: currentUser._id,
         postId: post._id,
       });
+      await ctx.db.patch(args.postId, { likes: post.likes + 1 });
     }
 
     return true;
