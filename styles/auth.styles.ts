@@ -6,9 +6,9 @@ const { width, height } = Dimensions.get("window");
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: "#FFF8C4",
     alignItems: 'center',
-    paddingVertical: 20,
+
   },
   brandSection: {
     alignItems: "center",
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   logoImage: {
     width: 500,
-    height: 100,
+    height: 110,
     marginBottom: 12,
   },
   appName: {
@@ -38,9 +38,9 @@ export const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 16,
-    color: "#fff8c4",
+    color: "#ff7043",
     letterSpacing: 1,
-    textTransform: "lowercase",
+    fontFamily: "Pencil",
   },
   illustrationContainer: {
     flex: 1,

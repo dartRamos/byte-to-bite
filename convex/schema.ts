@@ -4,7 +4,7 @@ import { v } from "convex/values";
 export default defineSchema({
   users: defineTable({
     username: v.string(), // HiDro
-    fullName: v.string(), // Dro Ramos
+    fullname: v.string(), // Dro Ramos
     email: v.string(),
     image: v.string(), // Comes with login in via email
     clerkId: v.string(),
@@ -47,5 +47,13 @@ export default defineSchema({
     storageId: v.id('_storage'),
     caption: v.optional(v.string()),
     title: v.optional(v.string()),
+    comments: v.number(),
   }).index("by_user", ["userId"]),
+
+  bookmarks: defineTable({
+    userId: v.id("users"),
+    postId: v.id("posts"),
+  }).index("by_user_and_post", ["userId", "postId"])
+    .index("by_post", ["postId"])
+    .index("by_user", ["userId"]),
 })

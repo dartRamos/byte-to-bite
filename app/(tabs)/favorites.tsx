@@ -65,7 +65,7 @@ export default function Favorites() {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyText}>No favorites saved yet!</Text>
-        <Ionicons name="heart-dislike" size={50} color={'white'} />
+        <Ionicons name="heart-dislike" size={50} color={'#ff7043'} />
       </View>
     );
   }
@@ -111,7 +111,6 @@ export default function Favorites() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#121212',
   },
   header: {
     width: '100%',
@@ -121,16 +120,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    backgroundColor: 'rgba(107, 76, 29, 1)',
     zIndex: 10,
   },
   headerTitle: {
-    color: 'white',
-    fontSize: 18,
+    color: '#d4af37',
+    fontSize: 26,
     fontWeight: "600",
+    fontFamily: 'BoldPencil',
   },
   scrollView: {
-    backgroundColor: '#121212',
+    backgroundColor: 'rgba(107, 76, 29, 0.7)',
   },
   scrollContent: {
     padding: 16,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
-    backgroundColor: '#121212',
+    backgroundColor: '#fffde7',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -156,8 +156,9 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#fff',
+    color: '#ff7043',
     marginBottom: 12,
+    fontFamily: 'Pencil',
   },
   backToHomeButton: {
     marginVertical: 20,

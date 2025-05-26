@@ -29,11 +29,11 @@ export default function Fridge() {
   );
 
   const imagePositions = [
-    { top: 437, left: 125 },
-    { top: 414, left: 262 },
-    { top: 577, left: 102 },
-    { top: 590, left: 257 },
-    { top: 707, left: 171 },
+    { top: 419, left: 105 },
+    { top: 420, left: 289 },
+    { top: 567, left: 85 },
+    { top: 589, left: 286 },
+    { top: 699, left: 165 },
   ];
 
   if (!favorites) {
@@ -61,7 +61,7 @@ export default function Fridge() {
     <View style={styles.container}>
       <View style={styles.fridgeWrapper}>
         <Image
-          source={require('../assets/images/fullfridge.png')}
+          source={require('../assets/images/fridgemobile.png')}
           style={styles.fridge}
         />
 
@@ -101,9 +101,8 @@ export default function Fridge() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: "#FFF8C4",
     alignItems: 'center',
-    paddingVertical: 20,
   },
   fridgeWrapper: {
     position: 'relative',
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
   },
   recipeImage: {
     width: 80,
-    height: 80,
+    height: 90,
     position: 'absolute',
     borderRadius: 8,
   },

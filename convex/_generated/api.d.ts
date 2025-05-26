@@ -14,6 +14,8 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as config from "../config.js";
+import type * as functions_bookmarks from "../functions/bookmarks.js";
+import type * as functions_comments from "../functions/comments.js";
 import type * as functions_fetchRecipeByIngredients from "../functions/fetchRecipeByIngredients.js";
 import type * as functions_fetchRecipeByRecipeId from "../functions/fetchRecipeByRecipeId.js";
 import type * as functions_getFavoriteByUser from "../functions/getFavoriteByUser.js";
@@ -33,6 +35,8 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   config: typeof config;
+  "functions/bookmarks": typeof functions_bookmarks;
+  "functions/comments": typeof functions_comments;
   "functions/fetchRecipeByIngredients": typeof functions_fetchRecipeByIngredients;
   "functions/fetchRecipeByRecipeId": typeof functions_fetchRecipeByRecipeId;
   "functions/getFavoriteByUser": typeof functions_getFavoriteByUser;
