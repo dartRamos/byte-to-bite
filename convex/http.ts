@@ -59,7 +59,7 @@ http.route({
       try {
         await ctx.runMutation(api.users.createUser, {
           email,
-          fullName: name,
+          fullname: name,
           image: image_url,
           clerkId: id,
           username: email.split("@")[0],

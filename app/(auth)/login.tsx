@@ -2,8 +2,7 @@ import { COLORS } from '@/constants/theme'
 import { useSSO } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
-import { Text, TouchableOpacity, View, Image } from 'react-native'
-import { styles } from '../../styles/auth.styles'
+import { Text, TouchableOpacity, View, Image, Dimensions, StyleSheet } from 'react-native'
 
 export default function login() {
   
@@ -51,9 +50,90 @@ export default function login() {
           </TouchableOpacity>
 
           <Text style={styles.termsText}>
-            By continuing, you agree to our <Text style={{color: COLORS.primary}}>Terms of Service</Text> and <Text style={{color: COLORS.primary}}>Privacy Policy</Text>
+            By continuing, you agree to our <Text style={{color: "#ff7043"}}>Terms of Service</Text> and <Text style={{color: "#ff7043"}}>Privacy Policy</Text>
           </Text>
         </View>
     </View>
   )
 }
+
+const { width, height } = Dimensions.get("window");
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFF8C4",
+    alignItems: 'center',
+  },
+  brandSection: {
+    alignItems: "center",
+    marginTop: height * 0.12,
+  },
+  logoImage: {
+    width: 500,
+    height: 110,
+    marginBottom: 12,
+  },
+  tagline: {
+    fontSize: 16,
+    color: "#ff7043",
+    letterSpacing: 1,
+    fontFamily: "Pencil",
+  },
+  illustrationContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 40,
+  },
+  illustration: {
+    width: 900,
+    height: 900,
+    marginTop: -50,
+    marginRight: -50,
+  },
+  loginSection: {
+    width: "100%",
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+    alignItems: "center",
+  },
+  googleButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.white,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 14,
+    marginBottom: 20,
+    width: "100%",
+    maxWidth: 300,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  googleIconContainer: {
+    width: 24,
+    height: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: COLORS.surface,
+  },
+  termsText: {
+    textAlign: "center",
+    fontSize: 12,
+    color: COLORS.grey,
+    maxWidth: 280,
+  },
+});

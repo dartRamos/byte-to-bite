@@ -2,7 +2,6 @@ import { useConvex, useMutation } from "convex/react";
 import React, { useState } from 'react';
 import { ImageBackground, Modal, SafeAreaView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { api } from '../convex/_generated/api';
-import { styles as authStyles } from '../styles/auth.styles';
 import RecipesModal from "./RecipesModal";
 import FullRecipeModal from "./FullRecipeModal";
 import { Ionicons } from "@expo/vector-icons";
@@ -114,7 +113,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
           <View style={styles.header}>
             <View style={styles.headerLeft}>
               <TouchableOpacity onPress={onClose}>
-                <Ionicons name="arrow-back" size={28} color="white" />
+                <Ionicons name="arrow-back" size={28} color="#e0b300" />
               </TouchableOpacity>
               <Text style={styles.headerTitle}>Home</Text>
             </View>
@@ -130,7 +129,7 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   
             <View style={styles.inputRow}>
               <TextInput
-                style={[authStyles.input, {
+                style={[styles.input, {
                   width: 303,
                   height: 100,
                   paddingVertical: 8,
@@ -186,11 +185,14 @@ export default function IngredientInputModal({ isVisible, onClose }: IngredientI
   
       {showRecipeModal && (
         <RecipesModal
-          isVisible={!showFullRecipeModal}
-          recipes={recipes}
-          onClose={() => setShowRecipeModal(false)}
-          onSelectRecipe={handleSelectRecipe}
-        />
+        isVisible={showRecipeModal && !showFullRecipeModal}
+        recipes={recipes}
+        onClose={() => {
+          setShowRecipeModal(false);
+          setShowFullRecipeModal(false); // Optional: for safety
+        }}
+        onSelectRecipe={handleSelectRecipe}
+      />
       )}
   
       <FullRecipeModal
@@ -212,17 +214,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(255, 253, 231, 0.1)',
   },
   header: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 50,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    backgroundColor: 'rgba(0,0,0,0.8)',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'rgba(107, 76, 29, 1)',
     zIndex: 10,
   },
   
@@ -238,9 +239,9 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   headerTitle: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    color: '#e0b300',
+    fontSize: 35,
+    fontFamily: 'BoldPencil',
     marginLeft: 12,
   },
   backgroundImage: {
@@ -257,12 +258,21 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignItems: 'center',
   },
+  input: {
+    borderWidth: 1,
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginRight: 10,
+    top: 165
+  },
   inputRow: {
     width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 20,
+    marginBottom: 40,
     left: 30
   },
 
@@ -273,7 +283,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     marginBottom: 10,
-    top: 180,
+    top: 250,
     paddingHorizontal: 20,
     
 

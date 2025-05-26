@@ -5,7 +5,7 @@ import { mutation, query } from "./_generated/server";
 export const createUser = mutation({
   args: {
     username: v.string(),
-    fullName: v.string(),
+    fullname: v.string(),
     email: v.string(),
     image: v.string(),
     clerkId: v.string(),
@@ -21,7 +21,7 @@ export const createUser = mutation({
 
     await ctx.db.insert("users", {
       username: args.username,
-      fullName: args.fullName,
+      fullname: args.fullname,
       email: args.email,
       image: args.image,
       clerkId: args.clerkId,

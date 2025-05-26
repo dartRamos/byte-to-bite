@@ -68,14 +68,14 @@ export default function CreateScreen() {
       <View style={styless.container}>
         <View style={styless.header}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={28} color={COLORS.primary} />
+            <Ionicons name="arrow-back" size={28} color={"#e0b300"} />
           </TouchableOpacity>
           <Text style={styless.headerTitle}>New Post</Text>
           <View style={{ width: 28 }} />
         </View>
 
         <TouchableOpacity onPress={pickImage} style={styless.emptyImageContainer}>
-          <Ionicons name="image-outline" size={48} color={COLORS.grey} />
+          <Ionicons name="image-outline" size={48} color={"#e0b300"} />
           <Text style={styless.headerTitle}>Tap to select an image.</Text>
         </TouchableOpacity>
         <View style={{ width: 28 }} />
@@ -102,12 +102,12 @@ export default function CreateScreen() {
             <Ionicons
               name="close-outline"
               size={28}
-              color={isSharing ? COLORS.grey : COLORS.white}
+              color={isSharing ? COLORS.grey : "#e0b300"}
             />
           </TouchableOpacity>
           <Text style={styless.headerTitle}>New Post</Text>
           <TouchableOpacity
-            style={[styless.shareButton, isSharing && styless.shareButtonDisabled]}
+            style={styless.shareButton}
             disabled={isSharing || !selectImage}
             onPress={handleShare}
           >
@@ -124,7 +124,7 @@ export default function CreateScreen() {
           bounces={false}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={[styless.content, isSharing && styless.contentDisabled]}>
+          <View style={styless.content}>
             {/* Image Section */}
             <View style={styless.imageSection}>
               <Image
@@ -147,7 +147,7 @@ export default function CreateScreen() {
               <TextInput
                 style={styless.titleInput}
                 placeholder="Recipe Title"
-                placeholderTextColor={COLORS.grey}
+                placeholderTextColor={"#ff7043"}
                 value={title}
                 onChangeText={setTitle}
                 editable={!isSharing}
@@ -163,7 +163,7 @@ export default function CreateScreen() {
                 <TextInput
                   style={styless.captionInput}
                   placeholder="Write a caption"
-                  placeholderTextColor={COLORS.grey}
+                  placeholderTextColor={"#ff7043"}
                   multiline
                   value={caption}
                   onChangeText={setCaption}
@@ -183,7 +183,7 @@ const { width } = Dimensions.get("window");
 const styless = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: "#fffde7",
   },
   contentContainer: {
     flex: 1,
@@ -195,15 +195,13 @@ const styless = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 0.5,
-    borderBottomColor: COLORS.surface,
+    backgroundColor: "rgba(107, 76, 29, 1)",
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: "600",
-    color: COLORS.white,
-  },
-  contentDisabled: {
-    opacity: 0.7,
+    color: "#e0b300",
+    fontFamily: "BoldPencil",
   },
   shareButton: {
     paddingHorizontal: 12,
@@ -212,13 +210,11 @@ const styless = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  shareButtonDisabled: {
-    opacity: 0.5,
-  },
   shareText: {
-    color: COLORS.primary,
-    fontSize: 16,
+    color: "#e0b300",
+    fontSize: 21,
     fontWeight: "600",
+    fontFamily: "BoldPencil",
   },
   emptyImageContainer: {
     flex: 1,
@@ -264,14 +260,15 @@ const styless = StyleSheet.create({
     flex: 1,
   },
   titleInput: {
-    color: COLORS.white,
+    color: "#ff7043",
     fontSize: 20,
     fontWeight: "600",
-    backgroundColor: COLORS.surface,
+    backgroundColor: "#FFF8C4",
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
     marginBottom: 16,
+    fontFamily: "Pencil",
   },
   captionContainer: {
     flexDirection: "row",
@@ -285,10 +282,10 @@ const styless = StyleSheet.create({
   },
   captionInput: {
     flex: 1,
-    color: COLORS.white,
+    color: "#ff7043",
     fontSize: 16,
     paddingTop: 8,
     minHeight: 40,
-    
+    fontFamily: "Pencil",
   },
 });

@@ -15,14 +15,18 @@ import {
 } from "react-native";
 import { api } from "../convex/_generated/api";
 import { useUser } from "@clerk/clerk-expo";
+import CommentsModal from "./CommentsModal";
+import { formatDistanceToNow } from "date-fns";
 
 type PostProps = {
   post: {
+    comments: number;
     _id: Id<"posts">;
     imageUrl: string;
     title?: string;
     caption?: string;
     isLiked: boolean;
+    isBookmarked: boolean;
     _creationTime: number;
     author: {
       _id: Id<"users">;
@@ -35,6 +39,9 @@ type PostProps = {
 export default function MyPosts({ post }: PostProps) {
   const { user } = useUser();
   const [isLiked, setIsLiked] = useState(post.isLiked);
+  const [showComments, setShowComments] = useState(false);
+  const [commentsCount, setCommentsCounts] = useState(post.comments);
+  const [isBookedmarked, setIsBookedmarked] = useState(post.isBookmarked);
 
   const currentUser = useQuery(
     api.users.getUserByClerkId,
@@ -42,6 +49,7 @@ export default function MyPosts({ post }: PostProps) {
   );
   const toggleLike = useMutation(api.functions.posts.toggleLike);
   const deletePost = useMutation(api.functions.posts.deletePost);
+  const toggleBookmark = useMutation(api.functions.bookmarks.toggleBookmark);
 
   const handleLike = async () => {
     try {
@@ -59,6 +67,11 @@ export default function MyPosts({ post }: PostProps) {
       console.error("Error deleting post:", err);
     }
   };
+
+  const handleBookmark = async () => {
+      const newIsBookedmarked = await toggleBookmark({ postId: post._id });
+      setIsBookedmarked(newIsBookedmarked);
+ }
 
   return (
     <View style={styles.post}>
@@ -109,10 +122,17 @@ export default function MyPosts({ post }: PostProps) {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowComments(true)}>
             <Ionicons name="chatbubble-outline" size={24} color={"#ff7043"} />
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={handleBookmark}>
+          <Ionicons
+            name={isBookedmarked ? "bookmark" : "bookmark-outline"}
+            size={24}
+            color={"#ff7043"}
+          />
+        </TouchableOpacity>
       </View>
 
       {post.title && (
@@ -122,6 +142,23 @@ export default function MyPosts({ post }: PostProps) {
           </View>
         </View>
       )}
+
+      {commentsCount > 0 && 
+        <TouchableOpacity onPress={() => setShowComments(true)}>
+          <Text style={styles.commentsText}>View all {commentsCount} comment(s)</Text>
+        </TouchableOpacity>
+      }
+
+      <Text style={styles.timeAgo}>
+        {formatDistanceToNow(post._creationTime, {addSuffix: true})}
+      </Text>
+
+      <CommentsModal 
+        postId={post._id}
+        visible={showComments}
+        onClose={() => setShowComments(false)}
+        onCommentAdded={() => setCommentsCounts((prev) => prev + 1)}
+      />
     </View>
   );
 }
@@ -154,14 +191,18 @@ export const styles = StyleSheet.create({
   },
   postUsername: {
     fontSize: 14,
-    fontWeight: "bold",
     color: "#ff7043",
     fontFamily: 'Pencil',
+    textShadowColor: "rgba(0,0,0,0.2)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1
   },
   postImage: {
     width: width * 0.95,
     height: width * 0.95,
     alignSelf: 'center',
+  
+
   },
   postActions: {
     flexDirection: "row",
@@ -184,9 +225,32 @@ export const styles = StyleSheet.create({
     marginBottom: 6,
   },
   captionText: {
-    fontSize: 14,
-    color: "#ff7043",
+    fontSize: 24,
+    color: "#ff3d00",
     flex: 1,
+    fontFamily: 'BoldPencil',
+    textShadowColor: "rgba(0,0,0,0.2)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+  commentsText: {
+    fontSize: 11,
+    color: COLORS.grey,
+    marginBottom: 2,
     fontFamily: 'Pencil',
+    left: 13,
+    textShadowColor: "rgba(0,0,0,0.2)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1
+  },
+  timeAgo: {
+    fontSize: 11,
+    color: COLORS.grey,
+    left: 13,
+    marginBottom: 10,
+    fontFamily: 'Pencil',
+    textShadowColor: "rgba(0,0,0,0.2)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1
   },
 });

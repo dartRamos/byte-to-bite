@@ -32,6 +32,7 @@ export const createPost = mutation({
       storageId: args.storageId,
       caption: args.caption,
       title: args.title,
+      comments: 0,
     });
 
     await ctx.db.patch(currentUser._id, {
@@ -65,6 +66,12 @@ export const getFeedPost= query(async (ctx) => {
           .withIndex("by_user_and_post", (q) => 
           q.eq("userId", currentUser._id).eq("postId", post._id))
           .first();
+        
+        const bookmark = await ctx.db
+          .query("bookmarks")
+          .withIndex("by_user_and_post", (q) =>
+          q.eq("userId", currentUser._id).eq("postId", post._id))
+          .first();
 
           return {
             ...post,
@@ -74,6 +81,7 @@ export const getFeedPost= query(async (ctx) => {
               image: postAuthor.image,
             },
             isLiked: !!like,
+            isBookmarked: !!bookmark,
           }
         })
     );

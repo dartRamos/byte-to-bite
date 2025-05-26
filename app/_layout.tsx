@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 export default function RootLayout() {
   const [fontLoaded] = useFonts({
     Pencil:require("../assets/fonts/KgTenThousandReasonsAlt-BOrl.ttf"),
+    BoldPencil:require("../assets/fonts/pencil-story.regular.otf"),
   })
 
   if (!fontLoaded) {

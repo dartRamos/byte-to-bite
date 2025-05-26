@@ -35,10 +35,10 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
     >
       <SafeAreaView style={styles.modalContainer}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={onClose}>
-            <Ionicons name="arrow-back" size={28} color="white" />
+        <TouchableOpacity onPress={() => {onClose();}} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={28} color="#e0b300" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Back to Ingredients</Text>
+          <Text style={styles.headerTitle}>Recipes</Text>
         </View>
 
         <View style={styles.modalContent}>
@@ -77,23 +77,33 @@ const RecipesModal = ({ isVisible, recipes, onClose, onSelectRecipe }: RecipesMo
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(255, 253, 231, 0.4)',
   },
   header: {
     width: '100%',
-    flexDirection: 'row',
+    height: 60,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    backgroundColor: 'rgba(0,0,0,0.8)',
-    zIndex: 10,
+    backgroundColor: 'rgba(107, 76, 29, 1)',
+    position: 'relative',
   },
+  
   headerTitle: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginLeft: 12,
+    color: '#e0b300',
+    fontSize: 35,
+    fontFamily: 'BoldPencil',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+  },
+  
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    top: '50%',
+    transform: [{ translateY: -14 }],
+    zIndex: 10
   },
   modalContent: {
     flex: 1,

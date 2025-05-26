@@ -8,18 +8,18 @@ export default function Index() {
   const [showIngredientsModal, setShowIngredientsModal] = useState(false);
 
 
-  // useEffect(() => {
-  //   Alert.alert(
-  //     "Let's get cookin'!",
-  //     'Tap on the "Ingredients list" on the fridge!',
+  useEffect(() => {
+    Alert.alert(
+      "Let's get cookin'!",
+      'Tap on the "Ingredients list" on the fridge!',
       
-  //     [
-  //       { 
-  //         text: "Got it!",
-  //       }
-  //     ]
-  //   );
-  // }, []);
+      [
+        { 
+          text: "Got it!",
+        }
+      ]
+    );
+  }, []);
 
   return (
     <ScrollView>
