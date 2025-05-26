@@ -72,17 +72,15 @@ const FullRecipeModal = ({ isVisible, recipe, onClose }: FullRecipeModalProps) =
                   recipeId={recipe.id} 
                   title={recipe.title} 
                   imageUrl={recipe.image} />
-                <Text style={styles.saveText}>
-                   Save this recipe
-                </Text>
+    
               </View>
               
               <Text style={styles.bodyText}>Ready in: {recipe.readyInMinutes} minutes</Text>
               <Text style={styles.bodyText}>Servings: {recipe.servings}</Text>
 
               <Text style={styles.sectionHeader}>Ingredients:</Text>
-              {recipe.extendedIngredients.map((ingredient) => (
-                <Text key={ingredient.id} style={styles.ingredientText}>
+              {recipe.extendedIngredients.map((ingredient, index) => (
+                <Text key={`${ingredient.id}-${index}`} style={styles.ingredientText}>
                   • {ingredient.amount} {ingredient.unit} {ingredient.name}
                 </Text>
               ))}

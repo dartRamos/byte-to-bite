@@ -1,11 +1,21 @@
-import { View, Image, StyleSheet, Text } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
-import { useQuery } from 'convex/react';
+import { useAction, useQuery } from 'convex/react';
+import React, { useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { api } from '../convex/_generated/api';
-import React from 'react';
+
+import FullFavoriteRecipeModal from './FullFavoriteRecipeModal';
+
 
 export default function Fridge() {
   const { user } = useUser();
+
+  const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
+  const [fullRecipeDetails, setFullRecipeDetails] = useState<any | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const fetchRecipeById = useAction(api.functions.fetchRecipeByRecipeId.fetchRecipeById);
+
 
   const currentUser = useQuery(
     api.users.getUserByClerkId,
@@ -29,6 +39,23 @@ export default function Fridge() {
     return 
   }
 
+  const openFullRecipe = async (recipeId: number) => {
+    try {
+      const fullRecipe = await fetchRecipeById({ id: recipeId });
+      setFullRecipeDetails(fullRecipe);
+      setSelectedRecipeId(recipeId);
+      setModalVisible(true);
+
+    } catch (error) {
+      console.error('Failed to fetch full recipe details', error);
+    }
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedRecipeId(null);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.fridgeWrapper}>
@@ -36,17 +63,30 @@ export default function Fridge() {
           source={require('../assets/images/fridgemobile.png')}
           style={styles.fridge}
         />
-  
+
+
         {favorites.slice(0, 5).map((recipe, index) => {
           const position = imagePositions[index];
           return (
-            <Image
+            <TouchableOpacity
               key={recipe._id}
-              source={{ uri: recipe.imageUrl }}
-              style={[styles.recipeImage, position]}
-            />
+              onPress={() => openFullRecipe(recipe.recipeId)}
+              style={[styles.recipeImageWrapper, position]}
+              activeOpacity={0.8}>
+              <Image
+                source={{ uri: recipe.imageUrl }}
+                style={[styles.recipeImage]}
+              />
+            </TouchableOpacity>
           );
         })}
+  
+
+        <FullFavoriteRecipeModal
+          isVisible={isModalVisible}
+          recipe={fullRecipeDetails}
+          onClose={closeModal}
+        />
       </View>
     </View>
   );
@@ -74,4 +114,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 8,
   },
+ 
+  recipeImageWrapper: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    zIndex: 10, 
+  }
 });
