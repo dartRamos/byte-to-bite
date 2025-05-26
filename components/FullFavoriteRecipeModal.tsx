@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Text, TouchableOpacity, View, Image, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import FavoriteButton from './FavoriteButton';
 
 type FullRecipe = {
   id: number;
@@ -48,6 +49,15 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRec
               )}
 
               <Text style={styles.title}>{recipe.title}</Text>
+             
+              <View style={styles.favoriteRow}>
+                <FavoriteButton 
+                  recipeId={recipe.id} 
+                  title={recipe.title} 
+                  imageUrl={recipe.image} 
+                />
+                <Text style={styles.saveText}>Save this recipe</Text>
+              </View>
 
               <Text style={styles.bodyText}>Ready in: {recipe.readyInMinutes} minutes</Text>
               <Text style={styles.bodyText}>Servings: {recipe.servings}</Text>
@@ -95,6 +105,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 6,
+  },
+  favoriteRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  saveText: {
+    marginLeft: 6,
+    fontSize: 14,
+    color: '#757575',
   },
   image: {
     width: '100%',
