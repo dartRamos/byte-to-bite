@@ -56,7 +56,7 @@ const FullFavoriteRecipeModal = ({ isVisible, recipe, onClose }: FullFavoriteRec
                   title={recipe.title} 
                   imageUrl={recipe.image} 
                 />
-                <Text style={styles.saveText}>Save this recipe</Text>
+      
               </View>
 
               <Text style={styles.bodyText}>Ready in: {recipe.readyInMinutes} minutes</Text>

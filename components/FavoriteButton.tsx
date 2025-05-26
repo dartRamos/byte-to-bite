@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFavorites } from '../context/FavoritesContext' 
 
@@ -24,11 +24,17 @@ const FavoriteButton = ({ recipeId, title, imageUrl }: FavoriteButtonProps) => {
       accessibilityLabel={favorited ? `Unfavorite ${title}` : `Favorite ${title}`}
       accessibilityRole="button"
     >
-      <Ionicons
-        name={favorited ? 'heart' : 'heart-outline'}
-        size={28}
-        color={favorited ? '#ff6b6b' : '#444'}
-      />
+       <View style={styles.content}>
+        <Text style={styles.text}>
+          {favorited ? 'Recipe saved!' : 'Save this recipe'}
+        </Text>
+        <Ionicons
+          name={favorited ? 'heart' : 'heart-outline'}
+          size={28}
+          color={favorited ? '#ff6b6b' : '#444'}
+        />
+        
+      </View>
     </Pressable>
   );
 };
@@ -42,6 +48,20 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.7,
   },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  text: {
+    marginTop: 4,
+    fontSize: 10, 
+    color: '#666',
+    textAlign: 'center',
+    fontFamily: 'Pencil', 
+  },
+
 });
+
 
 export default FavoriteButton;
