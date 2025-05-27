@@ -71,7 +71,3 @@ Run `npm run reset-project` to move starter code to an example directory and sta
 - [Clerk Docs](https://clerk.com/docs)  
 - [Convex Docs](https://docs.convex.dev)  
 - [Spoonacular API](https://spoonacular.com/food-api)
-
-## 📄 License
-
-This project is open source under the MIT License.
