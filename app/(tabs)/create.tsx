@@ -29,17 +29,17 @@ export default function CreateScreen() {
       quality: 0.8,
     });
 
-    if(!result.canceled) setSelectImage(result.assets[0].uri)
+    if (!result.canceled) setSelectImage(result.assets[0].uri);
   };
 
-  const generateUploadUrl = useMutation(api.functions.posts.generateUploadUrl)
-  const createPost = useMutation(api.functions.posts.createPost)
+  const generateUploadUrl = useMutation(api.functions.posts.generateUploadUrl);
+  const createPost = useMutation(api.functions.posts.createPost);
 
   const handleShare = async () => {
     if (!selectImage) return;
 
     try {
-      setIsSharing(true)
+      setIsSharing(true);
       const uploadUrl = await generateUploadUrl();
 
       const uploadResult = await FileSystem.uploadAsync(uploadUrl,
@@ -49,20 +49,25 @@ export default function CreateScreen() {
           mimeType: "image/jpeg",
         });
 
-        if(uploadResult.status !== 200) throw new Error("Upload Failed")
+      if (uploadResult.status !== 200) throw new Error("Upload Failed");
 
-        const { storageId } = JSON.parse(uploadResult.body);
-        await createPost({storageId, caption, title, isRecipe})
+      const { storageId } = JSON.parse(uploadResult.body);
+      await createPost({ storageId, caption, title, isRecipe });
 
-        router.push("/(tabs)/feed")
+      // Reset local state before navigation
+      setSelectImage(null);
+      setCaption("");
+      setTitle("");
+      setIsRecipe(false);
+
+      router.push("/(tabs)/feed");
 
     } catch (err) {
-      console.log("Error uploading post")
+      console.log("Error uploading post", err);
     } finally {
       setIsSharing(false);
     }
-  }
-
+  };
 
   if (!selectImage) {
     return (
@@ -71,20 +76,7 @@ export default function CreateScreen() {
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={28} color={"#e0b300"} />
           </TouchableOpacity>
-      
-          <View style={styless.recipeToggle}>
-            <TouchableOpacity
-              style={[
-                styless.checkbox,
-                { backgroundColor: isRecipe ? "#ff7043" : "#FFF8C4" },
-              ]}
-              onPress={() => setIsRecipe(!isRecipe)}
-              disabled={isSharing}
-            >
-              {isRecipe && <Ionicons name="checkmark" size={18} color="#fff" />}
-            </TouchableOpacity>
-            <Text style={styless.headerTitle}>This post is a recipe</Text>
-          </View>
+          <Text style={styless.headerTitle}>New Post</Text>
           <View style={{ width: 28 }} />
         </View>
 
@@ -157,10 +149,27 @@ export default function CreateScreen() {
               </TouchableOpacity>
             </View>
 
+            <TouchableOpacity
+              style={styless.recipeToggle}
+              onPress={() => setIsRecipe(!isRecipe)}
+              disabled={isSharing}
+              activeOpacity={0.8}
+            >
+              <View
+                style={[
+                  styless.checkbox,
+                  isRecipe ? styless.checkboxChecked : styless.checkboxUnchecked,
+                ]}
+              >
+                {isRecipe && <Ionicons name="checkmark" size={18} color="#fff" />}
+              </View>
+              <Text style={styless.checkboxLabel}>Recipe Post</Text>
+            </TouchableOpacity>
+
             <View style={styless.inputSection}>
               <TextInput
                 style={styless.titleInput}
-                placeholder="Recipe Title"
+                placeholder="Post Title"
                 placeholderTextColor={"#ff7043"}
                 value={title}
                 onChangeText={setTitle}
@@ -305,7 +314,8 @@ const styless = StyleSheet.create({
   recipeToggle: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 4,
   },
   checkbox: {
     width: 24,
@@ -316,6 +326,14 @@ const styless = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
+  },
+  checkboxChecked: {
+    backgroundColor: "#ff7043",
+    borderColor: "#ff7043",
+  },
+  checkboxUnchecked: {
+    backgroundColor: "#FFF8C4",
+    borderColor: "#ff7043",
   },
   checkboxLabel: {
     color: "#ff7043",
