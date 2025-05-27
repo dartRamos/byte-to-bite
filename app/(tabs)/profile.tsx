@@ -1,29 +1,27 @@
 import { Loader } from "@/components/Loader";
-import { COLORS } from "@/constants/theme";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "convex/react";
 import { Image } from "expo-image";
 import React from "react";
-import {
-  ActivityIndicator, Pressable, ScrollView, StyleSheet, Text,
-  View
-} from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { api } from "../../convex/_generated/api";
+import UserRecipeModal from "@/components/UserRecipeModal";
 
 export default function UserProfile() {
   const { isLoaded, user } = useUser();
   const { signOut } = useAuth();
 
+  const [showRecipeModal, setShowRecipeModal] = React.useState(false);
+  const [selectedPost, setSelectedPost] = React.useState(null);
+
   const dbUser = useQuery(api.users.getUserByClerkId, {
     clerkId: user?.id ?? "",
   });
 
-  const posts = useQuery(api.functions.posts.getFeedPost);
-  const bookmarkedPosts = useQuery(api.functions.bookmarks.getBookmarkedPosts)
+  const bookmarkedPosts = useQuery(api.functions.bookmarks.getBookmarkedPosts);
 
   if (bookmarkedPosts === undefined) return <Loader />;
-  if (posts === undefined) return <Loader />;
 
   if (!isLoaded || dbUser === undefined) {
     return (
@@ -42,10 +40,15 @@ export default function UserProfile() {
     );
   }
 
+  function onRecipePress(post?: any) {
+    setSelectedPost(post);
+    setShowRecipeModal(true);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.profileHeader}>
-        <Pressable style={styles.logoutButton}onPress={() => signOut()}>
+        <Pressable style={styles.logoutButton} onPress={() => signOut()}>
           <Ionicons name="log-out" size={40} color={"#e0b300"} />
         </Pressable>
 
@@ -57,28 +60,44 @@ export default function UserProfile() {
         contentContainerStyle={{
           padding: 8,
           flexDirection: "row",
-          flexWrap: "wrap"
+          flexWrap: "wrap",
         }}
       >
-        {bookmarkedPosts.length === 0 ? (
-          <NoBookmarksFound />
-        ) : (
-          bookmarkedPosts.map((post) => {
-            if (!post) return null;
-            return (
-              <View key={post._id} style={{ width: "33.33%", padding: 1 }}>
-                <Image
-                  source={post.imageUrl}
-                  style={{ width: "100%", aspectRatio: 1 }}
-                  contentFit="cover"
-                  transition={200}
-                  cachePolicy="memory-disk"
-                />
-              </View>
-            );
-          })
-        )}
+        {bookmarkedPosts.map((post) => {
+          if (!post) return null;
+          const isRecipe = post.isRecipe;
+
+          return (
+            <Pressable
+              key={post._id}
+              style={styles.postContainer}
+              onPress={() => isRecipe && onRecipePress(post)}
+              disabled={!isRecipe}
+            >
+              <Image
+                source={post.imageUrl}
+                style={styles.postImage}
+                contentFit="cover"
+                transition={200}
+                cachePolicy="memory-disk"
+              />
+              {isRecipe && (
+                <View style={styles.recipeLabel}>
+                  <Text style={styles.recipeText}>Recipe!</Text>
+                </View>
+              )}
+            </Pressable>
+          );
+        })}
       </ScrollView>
+
+      {selectedPost && (
+        <UserRecipeModal
+          visible={showRecipeModal}
+          onClose={() => setShowRecipeModal(false)}
+          post={selectedPost}
+        />
+      )}
     </View>
   );
 }
@@ -135,19 +154,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#121212",
   },
+  postContainer: {
+    width: "33.33%",
+    padding: 1,
+  },
+  postImage: {
+    width: "100%",
+    aspectRatio: 1,
+    position: "relative",
+  },
+  recipeLabel: {
+    position: "absolute",
+    top: 5,
+    left: 5,
+    backgroundColor: "#e0b300",
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 5,
+    zIndex: 10,
+  },
+  recipeText: {
+    color: "#4b2e00",
+    fontWeight: "bold",
+    fontFamily: "BoldPencil",
+    fontSize: 12,
+  },
 });
-
-function NoBookmarksFound() {
-  return (
-    <View style={{
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#fffde7",
-      width: "100%",
-      height: 500,
-    }}>
-      <Text style={{ fontSize: 22, color: "#ff7043", fontFamily: 'Pencil'}}>No bookmarked recipes yet</Text>
-    </View>
-  );
-}

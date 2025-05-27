@@ -11,7 +11,8 @@ export const createPost = mutation({
   args:{
     caption: v.optional(v.string()),
     storageId: v.id("_storage"),
-    title: v.optional(v.string())
+    title: v.optional(v.string()),
+    isRecipe: v.boolean()
   },
 
   handler: async (ctx, args) => {
@@ -33,7 +34,8 @@ export const createPost = mutation({
       caption: args.caption,
       title: args.title,
       comments: 0,
-      likes: 0
+      likes: 0,
+      isRecipe: args.isRecipe
     });
 
     await ctx.db.patch(currentUser._id, {

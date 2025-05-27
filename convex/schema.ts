@@ -49,6 +49,7 @@ export default defineSchema({
     title: v.optional(v.string()),
     comments: v.number(),
     likes: v.number(),
+    isRecipe: v.boolean()
   }).index("by_user", ["userId"]),
 
   bookmarks: defineTable({

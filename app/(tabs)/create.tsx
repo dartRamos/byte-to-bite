@@ -19,6 +19,7 @@ export default function CreateScreen() {
   const [selectImage, setSelectImage] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
   const [title, setTitle] = useState("");
+  const [isRecipe, setIsRecipe] = useState(false);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -51,7 +52,7 @@ export default function CreateScreen() {
         if(uploadResult.status !== 200) throw new Error("Upload Failed")
 
         const { storageId } = JSON.parse(uploadResult.body);
-        await createPost({storageId, caption, title})
+        await createPost({storageId, caption, title, isRecipe})
 
         router.push("/(tabs)/feed")
 
@@ -70,7 +71,20 @@ export default function CreateScreen() {
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={28} color={"#e0b300"} />
           </TouchableOpacity>
-          <Text style={styless.headerTitle}>New Post</Text>
+      
+          <View style={styless.recipeToggle}>
+            <TouchableOpacity
+              style={[
+                styless.checkbox,
+                { backgroundColor: isRecipe ? "#ff7043" : "#FFF8C4" },
+              ]}
+              onPress={() => setIsRecipe(!isRecipe)}
+              disabled={isSharing}
+            >
+              {isRecipe && <Ionicons name="checkmark" size={18} color="#fff" />}
+            </TouchableOpacity>
+            <Text style={styless.headerTitle}>This post is a recipe</Text>
+          </View>
           <View style={{ width: 28 }} />
         </View>
 
@@ -286,6 +300,26 @@ const styless = StyleSheet.create({
     fontSize: 16,
     paddingTop: 8,
     minHeight: 40,
+    fontFamily: "Pencil",
+  },
+  recipeToggle: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: "#ff7043",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  checkboxLabel: {
+    color: "#ff7043",
+    fontSize: 18,
     fontFamily: "Pencil",
   },
 });

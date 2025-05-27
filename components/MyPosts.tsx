@@ -7,15 +7,10 @@ import { formatDistanceToNow } from "date-fns";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useState } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { api } from "../convex/_generated/api";
 import CommentsModal from "./CommentsModal";
+import UserRecipeModal from "./UserRecipeModal";
 
 type PostProps = {
   post: {
@@ -27,6 +22,7 @@ type PostProps = {
     caption?: string;
     isLiked: boolean;
     isBookmarked: boolean;
+    isRecipe: boolean;
     _creationTime: number;
     author: {
       _id: Id<"users">;
@@ -41,8 +37,9 @@ export default function MyPosts({ post }: PostProps) {
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [showComments, setShowComments] = useState(false);
   const [commentsCount, setCommentsCounts] = useState(post.comments);
-  const [isBookedmarked, setIsBookedmarked] = useState(post.isBookmarked);
+  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
   const [likesCount, setLikesCount] = useState(post.likes);
+  const [showRecipeModal, setShowRecipeModal] = useState(false);
 
   const currentUser = useQuery(
     api.users.getUserByClerkId,
@@ -71,7 +68,7 @@ export default function MyPosts({ post }: PostProps) {
 
   const handleBookmark = async () => {
       const newIsBookedmarked = await toggleBookmark({ postId: post._id });
-      setIsBookedmarked(newIsBookedmarked);
+      setIsBookmarked(newIsBookedmarked);
  }
 
   return (
@@ -105,13 +102,30 @@ export default function MyPosts({ post }: PostProps) {
         </View>
       </View>
 
-      <Image
-        source={post.imageUrl}
-        style={styles.postImage}
-        contentFit="cover"
-        transition={200}
-        cachePolicy="memory-disk"
-      />
+      {post.isRecipe ? (
+        <TouchableOpacity onPress={() => setShowRecipeModal(true)}>
+          <View>
+            <Image
+              source={post.imageUrl}
+              style={styles.postImage}
+              contentFit="cover"
+              transition={200}
+              cachePolicy="memory-disk"
+            />
+            <View style={styles.recipeLabel}>
+              <Text style={styles.recipeLabelText}>Recipe!</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <Image
+          source={post.imageUrl}
+          style={styles.postImage}
+          contentFit="cover"
+          transition={200}
+          cachePolicy="memory-disk"
+        />
+      )}
 
       <View style={styles.postActions}>
         <View style={styles.postActionsLeft}>
@@ -127,13 +141,15 @@ export default function MyPosts({ post }: PostProps) {
             <Ionicons name="chatbubble-outline" size={24} color={"#ff7043"} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleBookmark}>
-          <Ionicons
-            name={isBookedmarked ? "bookmark" : "bookmark-outline"}
-            size={24}
-            color={"#ff7043"}
-          />
-        </TouchableOpacity>
+        {post.isRecipe && (
+          <TouchableOpacity onPress={handleBookmark}>
+            <Ionicons
+              name={isBookmarked ? "bookmark" : "bookmark-outline"}
+              size={24}
+              color={"#ff7043"}
+            />
+          </TouchableOpacity>
+        )}
       </View>
 
       {post.title && (
@@ -154,12 +170,22 @@ export default function MyPosts({ post }: PostProps) {
         {formatDistanceToNow(post._creationTime, {addSuffix: true})}
       </Text>
 
-      <CommentsModal 
-        postId={post._id}
-        visible={showComments}
-        onClose={() => setShowComments(false)}
-        onCommentAdded={() => setCommentsCounts((prev) => prev + 1)}
+      {post.isRecipe && showRecipeModal && (
+        <UserRecipeModal
+        visible={showRecipeModal}
+        onClose={() => setShowRecipeModal(false)}
+        post={post}
       />
+      )}
+
+      {showComments && (
+        <CommentsModal
+          postId={post._id}
+          visible={showComments}
+          onClose={() => setShowComments(false)}
+          onCommentAdded={() => setCommentsCounts((prev) => prev + 1)}
+        />
+      )}
     </View>
   );
 }
@@ -257,5 +283,23 @@ export const styles = StyleSheet.create({
     textShadowColor: "rgba(0,0,0,0.2)",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1
+  },
+  recipeLabel: {
+    position: "absolute",
+    top: 8,
+    left: 20,
+    backgroundColor: "#ff7043",
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    zIndex: 1,
+    borderColor: "black",
+    borderWidth: 1,
+  },
+  recipeLabelText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "bold",
+    fontFamily: 'Pencil',
   },
 });
