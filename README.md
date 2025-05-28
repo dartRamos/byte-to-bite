@@ -1,3 +1,15 @@
+# Contact Us
+
+Dartanhan Ramos:
+- Discord: hidro.
+- email: alessandroramosd@gmail.com
+- linkedin: https://www.linkedin.com/in/dartanhan-ramos-b60157181/
+
+Tayrine Soares:
+- Discord: tayrine0096
+- email: tayrinecristina@hotmail.com
+- linkedin: https://www.linkedin.com/in/tayrine-soares/
+
 # 🍽️ Byte to Bite
 
 Byte to Bite is a React Native app built with Expo, Clerk, and Convex. It lets users log in and enter the ingredients they have on hand. Using the Spoonacular API, the app suggests recipes based on those ingredients. 🥕🍳
